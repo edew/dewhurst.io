@@ -1,0 +1,27 @@
+{
+  "name": "dewhurst.io",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "serve": "python3 -m http.server 3000 --directory build",
+    "watch": "chokidar \"static\" \"templates\" \"posts\" \"index.js\" -c \"npm run start\"",
+    "start": "node index.js",
+    "test": "mocha tests"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "chokidar-cli": "~3.0.0",
+    "mocha": "~9.2.2"
+  },
+  "dependencies": {
+    "hogan.js": "~3.0.2",
+    "marked": "~4.0.14"
+  }
+}

@@ -1,0 +1,23 @@
+name: Update gh-pages branch
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN }}
+      USER_NAME: ${{ secrets.USER_NAME }}
+      USER_EMAIL: ${{ secrets.USER_EMAIL }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+      - run: npm ci
+      - run: npm test
+      - run: npm start
+      - run: ./deploy.sh
