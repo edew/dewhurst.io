@@ -27,4 +27,4 @@ git config user.name "$USER_NAME"
 git config user.email "$USER_EMAIL"
 git add .
 git commit -m "Update gh-pages branch from $MASTER_HEAD_HASH"
-git push origin
+git push --set-upstream origin gh-pages
