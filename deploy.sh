@@ -2,11 +2,6 @@
 
 set -e -o pipefail
 
-if [[ -z "${GITHUB_OAUTH_TOKEN}" ]]; then
-  echo "Stopping because GITHUB_OAUTH_TOKEN might not be set"
-  exit 1
-fi
-
 if [[ -z "${USER_NAME}" ]]; then
   echo "Stopping because USER_NAME might not be set"
   exit 1
