@@ -17,17 +17,14 @@ if [[ -z "${USER_EMAIL}" ]]; then
   exit 1
 fi
 
+git fetch origin
 MASTER_HEAD_HASH=$(git show-ref --heads --hash master)
 git checkout gh-pages
 find . -mindepth 1 -maxdepth 1 -not \( -name build -o -name ".git" \) -exec rm -rf {} \;
 cp -r build/* .
 rm -rf build
-CHANGED_FILES_COUNT=$(git diff --name-only | wc -l)
-
-if [ "$CHANGED_FILES_COUNT" != 0 ]; then
-  git config user.name "$USER_NAME"
-  git config user.email "$USER_EMAIL"
-  git add .
-  git commit -m "Update gh-pages branch from $MASTER_HEAD_HASH"
-  git push origin
-fi
+git config user.name "$USER_NAME"
+git config user.email "$USER_EMAIL"
+git add .
+git commit -m "Update gh-pages branch from $MASTER_HEAD_HASH"
+git push origin
