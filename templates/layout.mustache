@@ -11,7 +11,9 @@
 <body>
   <navbar>
     <h1>{{blogTitle}}</h1>
-    <h3><a href="/">All posts</a></h3>
+    {{#links}}
+    <h4><a href="{{href}}">{{text}}</a></h4>
+    {{/links}}
   </navbar>
   <main>{{> body}}</main>
 </body>
