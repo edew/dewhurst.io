@@ -51,7 +51,7 @@ async function readPosts(postsDirectoryPath) {
 
 function readMostRecentCommitDateForFile(filePath) {
   return new Promise((resolve, reject) => {
-    childProcess.exec(`git log --format="%aI" -n 1 ${path.resolve(filePath)}`, (err, stdout) => {
+    childProcess.exec(`git log --format="%aI" -n 1 master ${path.resolve(filePath)}`, (err, stdout) => {
       if (err) {
         reject(err);
       }
