@@ -40,6 +40,7 @@ async function readPosts(postsDirectoryPath) {
     const absolutePostPath = path.resolve(postsDirectoryPath, relativePostPath);
     const postFileContent = await fs.readFile(absolutePostPath, { encoding: 'utf8' });
     const isoDateString = await readMostRecentCommitDateForFile(absolutePostPath);
+    console.log(absolutePostPath, isoDateString);
     posts.push(postFromString(postFileContent, isoDateString));
   }
 
