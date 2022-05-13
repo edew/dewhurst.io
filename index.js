@@ -1,7 +1,6 @@
 const path = require('path');
 const fs = require('fs/promises');
 const os = require('os');
-const childProcess = require('child_process');
 const hogan = require('hogan.js');
 const marked = require('marked');
 const frontmatter = require('frontmatter');
@@ -40,26 +39,13 @@ async function readPosts(postsDirectoryPath) {
   for (const relativePostPath of postPaths) {
     const absolutePostPath = path.resolve(postsDirectoryPath, relativePostPath);
     const postFileContent = await fs.readFile(absolutePostPath, { encoding: 'utf8' });
-    const isoDateString = await readMostRecentCommitDateForFile(absolutePostPath);
-    posts.push(postFromString(postFileContent, isoDateString));
+    posts.push(postFromString(postFileContent));
   }
 
   // newest first
   posts.sort((a, b) => b.timestamp - a.timestamp);
 
   return posts;
-}
-
-function readMostRecentCommitDateForFile(filePath) {
-  return new Promise((resolve, reject) => {
-    childProcess.exec(`git log --format="%aI" -n 1 master ${path.resolve(filePath)}`, (err, stdout) => {
-      if (err) {
-        reject(err);
-      }
-  
-      resolve(stdout.split(os.EOL).filter(x => x !== '')[0]);
-    });
-  });
 }
 
 async function writePosts(posts) {
