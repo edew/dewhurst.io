@@ -4,6 +4,7 @@ const os = require('os');
 const childProcess = require('child_process');
 const hogan = require('hogan.js');
 const marked = require('marked');
+const frontmatter = require('frontmatter');
 
 const buildDirectoryPath = path.join(__dirname, 'build');
 const postsDirectoryPath = path.join(__dirname, 'posts');
@@ -40,7 +41,6 @@ async function readPosts(postsDirectoryPath) {
     const absolutePostPath = path.resolve(postsDirectoryPath, relativePostPath);
     const postFileContent = await fs.readFile(absolutePostPath, { encoding: 'utf8' });
     const isoDateString = await readMostRecentCommitDateForFile(absolutePostPath);
-    console.log(absolutePostPath, isoDateString);
     posts.push(postFromString(postFileContent, isoDateString));
   }
 
@@ -107,19 +107,26 @@ function snakeCase(string) {
   return string.replaceAll(/\s/g, '_').replaceAll(/\W/g, '').toLowerCase();
 }
 
-function postFromString(string, isoDateString) {
-  const markdownTokens = marked.marked.lexer(string);
-  const titleToken = markdownTokens.find(x => x.type === 'heading');
+function postFromString(string) {
+  const frontmatterResult = frontmatter(string);
+  const markdownTokens = marked.marked.lexer(frontmatterResult.content);
+  const html = marked.marked.parser(markdownTokens);
+  const titleFromFirstHeading = markdownTokens.find(x => x.type === 'heading')?.text;
+  const title = titleFromFirstHeading;
+  const postDate = new Date(frontmatterResult.data?.date);
 
-  if (titleToken === undefined) {
-    throw new Error('blimey this post dont got no title mate');
+  if (title === undefined) {
+    throw new Error('No title found in markdown headings');
   }
 
-  const postDate = new Date(isoDateString);
+  if (isNaN(postDate.getTime())) {
+    throw new Error('No date found in post frontmatter')
+  }
+
   return {
-    title: titleToken.text,
-    path: snakeCase(titleToken.text),
-    html: marked.marked.parser(markdownTokens),
+    title,
+    html,
+    path: snakeCase(title),
     timestamp: postDate.getTime(),
     dateString: postDate.toLocaleString('en-GB', { month: 'long', year: 'numeric', day: 'numeric' }),
   }

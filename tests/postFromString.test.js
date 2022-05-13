@@ -1,3 +1,4 @@
+const os = require('os');
 const assert = require('assert');
 const mocha = require('mocha');
 
@@ -7,8 +8,23 @@ function test(f) {
   mocha.it(f.name, f);
 }
 
+function unindent(string) {
+  const unindentedLines = string.split(os.EOL).map(line => line.replace(/^\s+/, ''))
+  
+  if (unindentedLines[0] === '') {
+    unindentedLines.splice(0, 1);
+  }
+  
+  return unindentedLines.join(os.EOL);
+}
+
 test(function should_create_post_with_title_and_path() {
-  const actual = postFromString('# I love to write useless software for fun', '1970-01-01T00:00:00.000Z');
+  const actual = postFromString(unindent(`
+    ---
+    date: ${new Date(0).toISOString()}
+    ---
+    # I love to write useless software for fun`
+  ));
   const expected = {
     title: 'I love to write useless software for fun',
     path: 'i_love_to_write_useless_software_for_fun',
@@ -21,7 +37,14 @@ test(function should_create_post_with_title_and_path() {
 });
 
 test(function should_create_post_with_title_path_and_one_paragraph() {
-  const actual = postFromString('# I love to write useless\n\nsoftware for fun', '1970-01-01T00:00:00.000Z');
+  const actual = postFromString(unindent(`
+    ---
+    date: ${new Date(0).toISOString()}
+    ---
+    # I love to write useless
+
+    software for fun
+  `));
   const expected = {
     title: 'I love to write useless',
     path: 'i_love_to_write_useless',
@@ -34,7 +57,17 @@ test(function should_create_post_with_title_path_and_one_paragraph() {
 });
 
 test(function should_create_post_with_title_path_and_multiple_paragraphs() {
-  const actual = postFromString('# I love to write useless\n\nsoftware for fun\n\ntake me to afternoon tea!', '1970-01-01T00:00:00.000Z');
+  const actual = postFromString(unindent(`
+    ---
+    date: ${new Date(0).toISOString()}
+    ---
+    # I love to write useless
+
+    software for fun
+
+
+    take me to afternoon tea!
+  `));
   const expected = {
     title: 'I love to write useless',
     path: 'i_love_to_write_useless',
@@ -47,12 +80,17 @@ test(function should_create_post_with_title_path_and_multiple_paragraphs() {
 });
 
 test(function should_create_a_post_with_timestamp_and_datestring() {
-  const actual = postFromString('# wow', '2022-04-28T22:27:46+01:00');
+  const actual = postFromString(unindent(`
+    ---
+    date: ${new Date(Date.UTC(2022, 03, 28)).toISOString()}
+    ---
+    # wow
+  `));
   const expected = {
     title: 'wow',
     path: 'wow',
     html: '<h1 id="wow">wow</h1>\n',
-    timestamp: 1651181266000,
+    timestamp: 1651104000000,
     dateString: '28 April 2022',
   };
 

@@ -21,6 +21,7 @@
     "mocha": "~9.2.2"
   },
   "dependencies": {
+    "frontmatter": "^0.0.3",
     "hogan.js": "~3.0.2",
     "marked": "~4.0.14"
   }
