@@ -3,10 +3,10 @@ layout: post
 title:  "Hamming Weight"
 date:   2022-07-26 00:51:24 +0100
 ---
-How many 1s are there in a binary number?
+How can we count how many 1s there are in a binary number?
 
-{% highlight javascript %}
-const hammingWeight = (num) => {
+<pre>
+<code>const hammingWeight = (num) => {
   let count = 0;
   while (num > 0) {
     num &= num - 1;
@@ -14,7 +14,8 @@ const hammingWeight = (num) => {
   }
   return count;
 }
-{% endhighlight %}
+</code>
+</pre>
 
 <img alt="A chart showing the hamming weight of the first 100 natural numbers" src="/assets/img/hamming-weight-first-100-natural-numbers.png" />
 
