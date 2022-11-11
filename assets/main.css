@@ -12,8 +12,7 @@ body > header {
 }
 
 .post-list-ul time {
-	font-size: 0.6em;
-	color: #dcafb5;
+	font-size: 0.8em;
 }
 
 pre {
@@ -23,4 +22,8 @@ pre {
 code {
   white-space: pre-wrap;
   padding: 0.5rem;
+}
+
+a:visited {
+  color: initial;
 }
