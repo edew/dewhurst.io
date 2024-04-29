@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>GIT_SSH_COMMAND | For Me</title>
+
+  <link rel="stylesheet" href="/style.css">
+  <link rel="canonical" href="https://www.dewhurst.io/2022/08/13/GIT_SSH_COMMAND.html">
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Last week I used Git’s GIT_SSH_COMMAND environment variable to force the a command running in a CircleCI job to use one of CircleCI’s “Additional SSH Keys” instead of the “deploy key”." />
+</head>
+<body>
+  <header role="banner">
+    <h1><a href="/">For Me</a></h1>
+  </header>
+  <main>
+    <article>
+      <header>
+        <p><time datetime="2022-08-13T15:24:00+00:00">Aug 13, 2022</time></p>
+      </header>
+      <section>
+        <p>Last week I used Git’s GIT_SSH_COMMAND environment variable to force the a command running in a CircleCI job to use one of CircleCI’s  “Additional SSH Keys” instead of the “deploy key”.</p>
+
+        <ol>
+          <li>Add an “Additional SSH Key” to CircleCI. Take note of its fingerprint.</li>
+          <li>Use the special “add_ssh_keys” special step in your CircleCI configuration to add the SSH key to your job. This step will add a file named “id_rsa_FINGERPRINT”.</li>
+          <li>Set the GIT_SSH_COMMAND to force git to use your desired key:</li>
+        </ol>
+
+        <pre>
+          <code>environment:
+            GIT_SSH_COMMAND: "ssh -i /home/circleci/.ssh/id_rsa_FINGERPRINT -o UserKnownHostsFile=/home/circleci/.ssh/known_hosts"
+          </code>
+        </pre>
+      </section>
+    </article>
+  </main>
+</body>
+</html>
