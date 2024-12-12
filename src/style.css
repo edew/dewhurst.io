@@ -43,3 +43,8 @@ a {
 time {
 	color: slategray;
 }
+
+pre {
+	text-wrap: wrap;
+	margin-left: 1em;
+}
