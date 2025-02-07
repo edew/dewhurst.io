@@ -14,11 +14,6 @@
 <body>
   <header role="banner">
     <h1><a href="/">For Me</a></h1>
-    <nav class="breadcrumbs">
-      <ol>
-        <li>GIT_SSH_COMMAND</li>
-      </ol>
-    </nav>
   </header>
   <main>
     <article>
@@ -34,11 +29,9 @@
           <li>Set the GIT_SSH_COMMAND to force git to use your desired key:</li>
         </ol>
 
-        <pre>
-          <code>environment:
-            GIT_SSH_COMMAND: "ssh -i /home/circleci/.ssh/id_rsa_FINGERPRINT -o UserKnownHostsFile=/home/circleci/.ssh/known_hosts"
-          </code>
-        </pre>
+        <pre><code>environment:
+  GIT_SSH_COMMAND: "ssh -i /home/circleci/.ssh/id_rsa_FINGERPRINT -o UserKnownHostsFile=/home/circleci/.ssh/known_hosts"
+        </code></pre>
       </section>
     </article>
   </main>
