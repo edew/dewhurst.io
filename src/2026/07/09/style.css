@@ -1,0 +1,69 @@
+#app {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  max-width: 40rem;
+}
+
+#app .progress {
+  color: #595959;
+  font-style: italic;
+  margin: 0 0 0.5rem;
+}
+
+#app .prompt {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem;
+  min-height: 2.2rem;
+}
+
+#app form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#app input[type="text"] {
+  font-family: inherit;
+  font-size: 1.25rem;
+  padding: 0.5rem;
+}
+
+#app .buttons {
+  display: flex;
+  gap: 1rem;
+
+}
+
+#app input[type="submit"],
+#app input[type="button"],
+#app .restart {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+#app .feedback {
+  min-height: 1.5rem;
+  margin: 1rem 0 0;
+  font-style: italic;
+}
+
+#app .feedback.correct {
+  color: #1a7f37;
+}
+
+#app .feedback.wrong {
+  color: #b00020;
+}
+
+#app .feedback.revealed {
+  color: #595959;
+  font-style: normal;
+}
+
+#app .restart {
+  align-self: flex-start;
+}

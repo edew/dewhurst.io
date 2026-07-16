@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>French | For Me</title>
+
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="canonical"
+      href="https://www.dewhurst.io/2026/07/09/french.html"
+    />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A little drill for translating English sentences into French across a mix of tenses."
+    />
+    <script type="module" src="script.js"></script>
+  </head>
+
+  <body>
+    <header role="banner">
+      <h1><a href="/">For Me</a></h1>
+    </header>
+    <main>
+      <article>
+        <header>
+          <p><time datetime="2026-07-09T09:00:00+01:00">Jul 9, 2026</time></p>
+        </header>
+        
+        <section id="app">
+          <p class="progress" aria-live="polite"></p>
+          <p class="prompt" lang="en"></p>
+          <form>
+            <input
+              type="text"
+              name="answer"
+              lang="fr"
+              autocomplete="off"
+              autocapitalize="off"
+              autocorrect="off"
+              spellcheck="false"
+              placeholder="Type the French translation"
+              aria-label="French translation"
+            />
+            <div class="buttons">
+              <input type="submit" value="Check" />
+              <input type="button" name="reveal" value="Show answer" />
+            </div>
+          </form>
+          <p class="feedback" aria-live="polite"></p>
+          <button type="button" class="restart" hidden>Start again</button>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>
