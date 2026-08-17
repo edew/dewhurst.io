@@ -1,0 +1,39 @@
+{
+  "name": "dewhurst.io",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.22.0",
+  "scripts": {
+    "build": "react-router build",
+    "dev": "react-router dev",
+    "typecheck": "react-router typegen && tsc"
+  },
+  "dependencies": {
+    "@react-router/node": "^8",
+    "isbot": "^5",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-router": "^8"
+  },
+  "devDependencies": {
+    "@mdx-js/rollup": "^3.1.1",
+    "@react-router/dev": "^8",
+    "@types/node": "^22",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "gray-matter": "^4.0.3",
+    "remark-frontmatter": "^5.0.0",
+    "remark-mdx-frontmatter": "^5.2.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edew/dewhurst.io.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/edew/dewhurst.io/issues"
+  },
+  "homepage": "https://github.com/edew/dewhurst.io#readme"
+}
