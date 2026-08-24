@@ -9,6 +9,9 @@ export default defineConfig({
     mdx({ remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter] }),
     reactRouter(),
   ],
+  server: {
+    port: 8000,
+  },
   build: {
     rolldownOptions: {
       output: {
