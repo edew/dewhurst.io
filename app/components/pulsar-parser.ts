@@ -6,7 +6,7 @@
 <term> ::= <factor> <term'>
 <term'> ::= "*" <factor> <term'> | "/" <factor> <term'> | ε
 
-<factor> ::= "(" <expression> ")" | <value>
+<factor> ::= "-" <factor> | "(" <expression> ")" | <value>
 
 <value> ::= "x" | "y" | "t" | <cos> | <sin> | "pi" | <number>
 
@@ -14,11 +14,10 @@
 
 <sin> ::= "sin" "(" <expression> ")"
 
-<number> ::= <integer> <number'>
-<number> ::= "." <integer> | ε
+<number> ::= <digits> <fraction>
+<fraction> ::= "." <digits> | ε
 
-<integer> ::= <digit> <integer'>
-<integer'> ::= <digit> <integer'> | ε
+<digits> ::= <digit> <digits> | <digit>
 
 <digit> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
 
@@ -31,11 +30,6 @@ export interface Env {
 }
 
 type Expr = (env: Env) => number;
-
-interface Token {
-  t: string;
-  v: string;
-}
 
 const TokenTypes = {
   close: "close",
@@ -53,7 +47,12 @@ const TokenTypes = {
   t: "t",
   x: "x",
   y: "y",
-};
+} as const;
+
+interface Token {
+  t: keyof typeof TokenTypes;
+  v: string;
+}
 
 function tokenise(input: string): Token[] {
   const tokens: Token[] = [];
@@ -71,7 +70,7 @@ function tokenise(input: string): Token[] {
     }
   }
 
-  function addToken(type: string, value?: string) {
+  function addToken(type: keyof typeof TokenTypes, value?: string) {
     tokens.push({ t: type, v: value ?? "" });
   }
 
@@ -142,10 +141,6 @@ const Expressions = {
     (e1: Expr, e2: Expr): Expr =>
     (env) =>
       e1(env) / e2(env),
-  integer:
-    (value: string): Expr =>
-    () =>
-      parseInt(value, 10),
   minus:
     (e1: Expr, e2: Expr): Expr =>
     (env) =>
@@ -154,10 +149,14 @@ const Expressions = {
     (e1: Expr, e2: Expr): Expr =>
     (env) =>
       e1(env) * e2(env),
-  number:
-    (e1: Expr, e2: Expr): Expr =>
+  negate:
+    (e: Expr): Expr =>
     (env) =>
-      parseFloat(`${e1(env)}.${e2(env)}`),
+      0 - e(env),
+  number:
+    (value: string): Expr =>
+    () =>
+      parseFloat(value),
   pi: (): Expr => () => Math.PI,
   plus:
     (e1: Expr, e2: Expr): Expr =>
@@ -204,25 +203,34 @@ function parse(tokens: Token[]): Expr {
     return token;
   }
 
-  function integer() {
-    let accumulator = peek().v;
+  function digits() {
+    let accumulator = "";
 
     while (accept(TokenTypes.digit)) {
       accumulator += token!.v;
     }
 
-    return Expressions.integer(accumulator);
+    return accumulator;
   }
 
   function number() {
-    const i = integer();
+    const whole = digits();
 
-    if (!accept(TokenTypes.dot)) {
-      return i;
+    if (whole === "") {
+      throw new Error(`number: unexpected ${peek()?.t}`);
     }
 
-    const i2 = integer();
-    return Expressions.number(i, i2);
+    if (!accept(TokenTypes.dot)) {
+      return Expressions.number(whole);
+    }
+
+    const fraction = digits();
+
+    if (fraction === "") {
+      throw new Error("number: no digits after the decimal point");
+    }
+
+    return Expressions.number(`${whole}.${fraction}`);
   }
 
   function value(): Expr {
@@ -266,6 +274,10 @@ function parse(tokens: Token[]): Expr {
   }
 
   function factor(): Expr {
+    if (accept(TokenTypes.minus)) {
+      return Expressions.negate(factor());
+    }
+
     if (accept(TokenTypes.open)) {
       const e = expression();
 
@@ -280,10 +292,7 @@ function parse(tokens: Token[]): Expr {
   function term(): Expr {
     let e = factor();
 
-    while (
-      !accept(TokenTypes.EOF) &&
-      (accept(TokenTypes.multiply) || accept(TokenTypes.divide))
-    ) {
+    while (accept(TokenTypes.multiply) || accept(TokenTypes.divide)) {
       const operator =
         token!.t === TokenTypes.multiply
           ? Expressions.multiply
@@ -297,10 +306,7 @@ function parse(tokens: Token[]): Expr {
   function expression(): Expr {
     let e = term();
 
-    while (
-      !accept(TokenTypes.EOF) &&
-      (accept(TokenTypes.plus) || accept(TokenTypes.minus))
-    ) {
+    while (accept(TokenTypes.plus) || accept(TokenTypes.minus)) {
       const operator =
         token!.t === TokenTypes.plus ? Expressions.plus : Expressions.minus;
       e = operator(e, term());
@@ -309,7 +315,11 @@ function parse(tokens: Token[]): Expr {
     return e;
   }
 
-  return expression();
+  const e = expression();
+
+  expect(TokenTypes.EOF);
+
+  return e;
 }
 
 export function execute(input: string, env: Env): number {
