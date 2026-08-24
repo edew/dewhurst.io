@@ -95,12 +95,15 @@ export default function PulsarClone() {
 
       for (let i = 0; i < rectCount; i++) {
         for (let j = 0; j < rectCount; j++) {
-          const x = Math.floor(i * rectWidth);
-          const y = Math.floor(j * rectHeight);
+          const x0 = Math.round(i * rectWidth);
+          const x1 = Math.round((i + 1) * rectWidth);
+          const y0 = Math.round(j * rectHeight);
+          const y1 = Math.round((j + 1) * rectHeight);
+
           const value = f(i, j, t);
-          const rgb = color(x);
+          const rgb = color(x0);
           ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${value})`;
-          ctx.fillRect(x, y, rectWidth + 0.5, rectHeight + 0.5);
+          ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
         }
       }
 
