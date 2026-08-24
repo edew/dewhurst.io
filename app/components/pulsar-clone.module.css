@@ -11,6 +11,7 @@
 }
 
 .app input,
+.app select,
 .app textarea {
   font-size: 1.5em;
   flex: 1 1 auto;

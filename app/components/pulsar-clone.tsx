@@ -44,14 +44,71 @@ function hsvToRgb(hue: number, sat: number, val: number) {
   };
 }
 
-const EXAMPLES = ["cos(x - y * (t / 1000))", "cos(t / 50)"];
+const EXAMPLES = [
+  {
+    group: "Ripples",
+    patterns: [
+      {
+        name: "Stone in water",
+        expression:
+          "cos(((x - 3) * (x - 3) + (y - 3) * (y - 3)) / 40 - t / 300)",
+      },
+      {
+        name: "Two stones",
+        expression:
+          "cos(((x - 10) * (x - 10) + (y - 16) * (y - 16)) / 40 - t / 300) + cos(((x - 22) * (x - 22) + (y - 16) * (y - 16)) / 40 - t / 300)",
+      },
+      {
+        name: "Breathing rings",
+        expression:
+          "cos(((x - 16) * (x - 16) + (y - 16) * (y - 16)) / (8 + 6 * cos(t / 1000)))",
+      },
+    ],
+  },
+  {
+    group: "Grids",
+    patterns: [
+      {
+        name: "Checkerboard",
+        expression: "cos(x * pi) * cos(y * pi) * cos(t / 500)",
+      },
+      { name: "Fan", expression: "cos((x - 16) * (y - 16) / 8 - t / 400)" },
+      {
+        name: "Saddle",
+        expression:
+          "cos((x - 16) * (x - 16) / 30 + (y - 16) * (y - 16) / 30 + (x - 16) * (y - 16) * cos(t / 900) / 10)",
+      },
+    ],
+  },
+  {
+    group: "Motion",
+    patterns: [
+      {
+        name: "Wandering blob",
+        expression:
+          "cos(x / 4 - cos(t / 700) * 8) * cos(y / 4 - sin(t / 900) * 8)",
+      },
+      { name: "Flag", expression: "sin(x / 3 + sin(y / 3 + t / 600) * 2)" },
+      {
+        name: "Static",
+        expression: "sin(sin(x * 12.9) * 300 + sin(y * 7.3) * 700 + t / 200)",
+      },
+    ],
+  },
+];
 
 export default function PulsarClone() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const debugRef = useRef<HTMLPreElement>(null);
-  const [expression, setExpression] = useState("1");
+  const [expression, setExpression] = useState(
+    EXAMPLES[0].patterns[0].expression,
+  );
   const expressionRef = useRef(expression);
   expressionRef.current = expression;
+
+  const isExample = EXAMPLES.some(({ patterns }) =>
+    patterns.some((pattern) => pattern.expression === expression),
+  );
 
   useEffect(() => {
     const canvas = canvasRef.current!;
@@ -138,14 +195,22 @@ export default function PulsarClone() {
         value={expression}
         onChange={(event) => setExpression(event.target.value)}
       />
-      {EXAMPLES.map((example) => (
-        <input
-          key={example}
-          type="button"
-          value={example}
-          onClick={() => setExpression(example)}
-        />
-      ))}
+      <select
+        name="example"
+        value={isExample ? expression : ""}
+        onChange={(event) => setExpression(event.target.value)}
+      >
+        <option value="">Select a pattern...</option>
+        {EXAMPLES.map(({ group, patterns }) => (
+          <optgroup key={group} label={group}>
+            {patterns.map(({ name, expression }) => (
+              <option key={name} value={expression}>
+                {name}
+              </option>
+            ))}
+          </optgroup>
+        ))}
+      </select>
       <pre ref={debugRef}></pre>
     </div>
   );
