@@ -5,8 +5,8 @@ import styles from "./pulsar-clone.module.css";
 
 function hsvToRgb(hue: number, sat: number, val: number) {
   const h = hue / 360;
-  const s = 100 / sat;
-  const v = 100 / val;
+  const s = sat / 100;
+  const v = val / 100;
   const i = Math.floor(h * 6);
   const f = h * 6 - i;
   const p = v * (1 - s);
