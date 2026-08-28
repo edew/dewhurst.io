@@ -43,10 +43,6 @@ export default function FrenchDrill() {
   const restartRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    setDeck(shuffle(sentences));
-  }, []);
-
-  useEffect(() => {
     if (finished) {
       restartRef.current?.focus();
     } else {
