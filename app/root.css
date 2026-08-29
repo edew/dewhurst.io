@@ -103,6 +103,41 @@ pre code {
   font-size: 0.82rem;
 }
 
+/* form controls in embedded post components (the french drill's text
+   input, pulsar-clone's textarea and select) otherwise render with
+   the browser's native white chrome, which clashes with the night
+   sky. Lift them the same way code is lifted, off the page rather
+   than off a plain background. */
+input,
+textarea,
+select,
+button {
+  font: inherit;
+  color: inherit;
+  background: #ffffff1c;
+  border: 1px solid #ffffff2e;
+  border-radius: 6px;
+  padding: 0.5em 0.7em;
+}
+input::placeholder,
+textarea::placeholder {
+  color: var(--ink-soft);
+  opacity: 1;
+}
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 1px;
+}
+button,
+input[type="submit"],
+input[type="button"],
+input[type="reset"] {
+  cursor: pointer;
+}
+
 /* ---------- home: hero under the starry sky ---------- */
 .hero {
   /* short of the full viewport so the first ridge shows above
@@ -425,6 +460,15 @@ article :is(h2, h3, h4) {
   }
   pre {
     background: rgba(20, 34, 58, 0.05);
+  }
+
+  /* the same lift, pressed into a light page instead */
+  input,
+  textarea,
+  select,
+  button {
+    background: rgba(20, 34, 58, 0.08);
+    border-color: rgba(20, 34, 58, 0.15);
   }
 
   /* daylight motes: soft sunlit specks instead of winking stars —
