@@ -161,6 +161,92 @@ pre code {
   }
 }
 
+/* wispy stratus streaks over the daylight hero — hidden here, shown
+   by the light media query at the end of this file. Small closed lens
+   shapes in the strata bands' billow language, a solid streak with a
+   translucent echo behind it. Drift is a slow horizontal translateX
+   wobble only — cheap to composite, never touches layout or filter. */
+#clouds {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: -1; /* same layer as #stars: behind the hero text */
+  overflow: hidden; /* the drift wobble must never open a scrollbar */
+  pointer-events: none;
+}
+.wisp {
+  position: absolute;
+  animation: drift-a var(--dur, 84s) ease-in-out var(--delay, 0s) infinite;
+}
+.wisp svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+/* the echo: set behind the solid streak by CSS offset alone, larger
+   and at 0.45 opacity — the strata bands' depth trick */
+.wisp svg.echo {
+  position: absolute;
+  top: -16%;
+  left: -7%;
+  width: 114%;
+}
+.wisp.w1 {
+  top: 9%;
+  left: -6%;
+  width: 48%;
+}
+.wisp.w2 {
+  top: 41%;
+  right: -4%;
+  width: 30%;
+  animation-name: drift-b;
+}
+.wisp.w3 {
+  top: 67%;
+  left: 21%;
+  width: 17%;
+  animation-name: drift-c;
+}
+/* w4 is echo-only — no solid front streak — a third, fainter depth
+   tier drifting between the two solid streaks */
+.wisp.w4 {
+  top: 25%;
+  right: 22%;
+  width: 21%;
+}
+.wisp.w4 svg {
+  opacity: 0.75;
+}
+@keyframes drift-a {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(2.6%);
+  }
+}
+@keyframes drift-b {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-2.2%);
+  }
+}
+@keyframes drift-c {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(1.6%);
+  }
+}
+
 /* ---------- home: the posts, one entry per layer ---------- */
 .posts {
   list-style: none;
@@ -238,6 +324,10 @@ article :is(h2, h3, h4) {
   #stars i {
     animation: none;
     opacity: 0.7;
+  }
+  .wisp {
+    /* clouds stay put but stay visible — only the drift stops */
+    animation: none;
   }
 }
 
@@ -348,6 +438,11 @@ article :is(h2, h3, h4) {
   #strata .band {
     --band-fill: var(--band-fill-light);
     --band-body: var(--band-body-light);
+  }
+
+  /* daylight brings out the clouds */
+  #clouds {
+    display: block;
   }
 }
 

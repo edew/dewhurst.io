@@ -2,6 +2,7 @@ import { Link } from "react-router";
 
 import type { Route } from "./+types/home";
 import { getPosts } from "../posts.server";
+import { Clouds } from "../components/clouds";
 import { StarField } from "../components/star-field";
 import { Strata } from "../components/strata";
 
@@ -23,6 +24,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       <Strata />
       <main>
         <header className="hero">
+          <Clouds />
           <StarField />
           <h1>For Me</h1>
           <p>a blog for me</p>
