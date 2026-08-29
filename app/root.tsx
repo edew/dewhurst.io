@@ -1,6 +1,5 @@
 import {
   isRouteErrorResponse,
-  Link,
   Links,
   Meta,
   Outlet,
@@ -31,19 +30,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+// Each route brings its own chrome: the home page is the hero over the
+// night landscape, post pages carry a small banner linking back to it.
 export default function App() {
-  return (
-    <>
-      <header role="banner">
-        <h1>
-          <Link to="/">For Me</Link>
-        </h1>
-      </header>
-      <main>
-        <Outlet />
-      </main>
-    </>
-  );
+  return <Outlet />;
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

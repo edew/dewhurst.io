@@ -1,8 +1,10 @@
 #!/usr/bin/env node
-// Pre-generates the strata band markup in gradient.html, replacing the
-// <div id="strata"> block in place. The edge curves come from a seeded
-// generator, so re-running this script is a no-op unless the constants
-// change.
+// Pre-generates the strata band data:
+//   - app/strata-data.json, rendered by app/components/strata.tsx
+//   - the <div id="strata"> block in gradient.html (the prototype),
+//     replaced in place
+// The edge curves come from a seeded generator, so re-running this
+// script is a no-op unless the constants change.
 //
 //   node scripts/generate-strata.mjs
 
@@ -103,8 +105,7 @@ function paletteAt(t) {
 // width, rounded up so the overlap never falls short).
 const BANDS = ["72vh", "41%", "58%", "76%", "88%"];
 
-let html = `<div id="strata" aria-hidden="true">\n`;
-BANDS.forEach((top, i) => {
+const bands = BANDS.map((top, i) => {
   const t = i / (BANDS.length - 1);
   const fill = paletteAt(t);
   const fillNext = paletteAt((i + 1) / (BANDS.length - 1));
@@ -113,14 +114,32 @@ BANDS.forEach((top, i) => {
   const back = billowPath(sweep);
   const front = billowPath(sweep);
   const next = BANDS[i + 1];
-  const bottom = next ? `calc(${100 - parseFloat(next)}% - 8.34vw)` : "0";
-  html +=
-    `      <div class="band" style="top: ${top}; bottom: ${bottom}">\n` +
-    `        <svg class="back" viewBox="0 0 ${VIEW_W} ${VIEW_H}" preserveAspectRatio="none"><path d="${back}" fill="${fill}" fill-opacity="0.45"/></svg>\n` +
-    `        <svg viewBox="0 0 ${VIEW_W} ${VIEW_H}" preserveAspectRatio="none"><path d="${front}" fill="${fill}"/></svg>\n` +
-    `        <div class="body" style="background: linear-gradient(${fill}, ${lerpHex(fill, fillNext, 0.65)})"></div>\n` +
-    `      </div>\n`;
+
+  return {
+    top,
+    bottom: next ? `calc(${100 - parseFloat(next)}% - 8.34vw)` : "0",
+    fill,
+    bodyBackground: `linear-gradient(${fill}, ${lerpHex(fill, fillNext, 0.65)})`,
+    back,
+    front,
+  };
 });
+
+writeFileSync(
+  new URL("../app/strata-data.json", import.meta.url),
+  JSON.stringify(bands, null, 2) + "\n",
+);
+console.log(`wrote ${bands.length} bands into app/strata-data.json`);
+
+let html = `<div id="strata" aria-hidden="true">\n`;
+for (const b of bands) {
+  html +=
+    `      <div class="band" style="top: ${b.top}; bottom: ${b.bottom}">\n` +
+    `        <svg class="back" viewBox="0 0 ${VIEW_W} ${VIEW_H}" preserveAspectRatio="none"><path d="${b.back}" fill="${b.fill}" fill-opacity="0.45"/></svg>\n` +
+    `        <svg viewBox="0 0 ${VIEW_W} ${VIEW_H}" preserveAspectRatio="none"><path d="${b.front}" fill="${b.fill}"/></svg>\n` +
+    `        <div class="body" style="background: ${b.bodyBackground}"></div>\n` +
+    `      </div>\n`;
+}
 html += `    </div>`;
 
 const src = readFileSync(FILE, "utf8");

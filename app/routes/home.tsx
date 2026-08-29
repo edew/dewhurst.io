@@ -2,6 +2,8 @@ import { Link } from "react-router";
 
 import type { Route } from "./+types/home";
 import { getPosts } from "../posts.server";
+import { StarField } from "../components/star-field";
+import { Strata } from "../components/strata";
 
 export async function loader() {
   return { posts: await getPosts() };
@@ -17,13 +19,28 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Home({ loaderData }: Route.ComponentProps) {
   return (
-    <nav>
-      {loaderData.posts.map((post) => (
-        <li key={post.path}>
-          <Link to={post.path}>{post.title}</Link>
-          <time dateTime={post.date}>{post.dateFormatted}</time>
-        </li>
-      ))}
-    </nav>
+    <>
+      <Strata />
+      <main>
+        <header className="hero">
+          <StarField />
+          <h1>For Me</h1>
+          <p>a blog for me</p>
+        </header>
+        <ol className="posts">
+          {loaderData.posts.map((post) => (
+            <li className="stratum" key={post.path}>
+              <time className="m" dateTime={post.date}>
+                {post.dateFormatted}
+              </time>
+              <h2>
+                <Link to={post.path}>{post.title}</Link>
+              </h2>
+              <p>{post.description}</p>
+            </li>
+          ))}
+        </ol>
+      </main>
+    </>
   );
 }

@@ -1,4 +1,4 @@
-import { Outlet, data } from "react-router";
+import { Link, Outlet, data } from "react-router";
 
 import type { Route } from "./+types/post";
 import { getPost } from "../posts.server";
@@ -36,15 +36,23 @@ export function meta({ loaderData }: Route.MetaArgs) {
 
 export default function Post({ loaderData }: Route.ComponentProps) {
   return (
-    <article>
-      <header>
-        <p>
-          <time dateTime={loaderData.date}>{loaderData.dateFormatted}</time>
-        </p>
+    <>
+      <header className="site-header" role="banner">
+        <Link to="/">For Me</Link>
       </header>
-      <section>
-        <Outlet />
-      </section>
-    </article>
+      <main>
+        <article>
+          <header>
+            <time className="m" dateTime={loaderData.date}>
+              {loaderData.dateFormatted}
+            </time>
+            <h1>{loaderData.title}</h1>
+          </header>
+          <section>
+            <Outlet />
+          </section>
+        </article>
+      </main>
+    </>
   );
 }
