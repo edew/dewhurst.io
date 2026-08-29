@@ -26,8 +26,6 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         <header className="hero">
           <Clouds />
           <StarField />
-          <h1>For Me</h1>
-          <p>a blog for me</p>
         </header>
         <ol className="posts">
           {loaderData.posts.map((post) => (
@@ -38,7 +36,6 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               <h2>
                 <Link to={post.path}>{post.title}</Link>
               </h2>
-              <p>{post.description}</p>
             </li>
           ))}
         </ol>
