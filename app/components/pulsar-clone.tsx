@@ -99,7 +99,7 @@ const EXAMPLES = [
 
 export default function PulsarClone() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const debugRef = useRef<HTMLPreElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [expression, setExpression] = useState(
     EXAMPLES[0].patterns[0].expression,
   );
@@ -109,6 +109,10 @@ export default function PulsarClone() {
   const isExample = EXAMPLES.some(({ patterns }) =>
     patterns.some((pattern) => pattern.expression === expression),
   );
+
+  useEffect(() => {
+    textareaRef.current?.focus();
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current!;
@@ -163,10 +167,6 @@ export default function PulsarClone() {
           ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
         }
       }
-
-      if (debugRef.current) {
-        debugRef.current.textContent = `${t}`;
-      }
     }
 
     let previousTimestamp = 0;
@@ -194,6 +194,7 @@ export default function PulsarClone() {
         placeholder="cos(x - y * (t * 5.8))"
         value={expression}
         onChange={(event) => setExpression(event.target.value)}
+        ref={textareaRef}
       />
       <select
         name="example"
@@ -211,7 +212,6 @@ export default function PulsarClone() {
           </optgroup>
         ))}
       </select>
-      <pre ref={debugRef}></pre>
     </div>
   );
 }
