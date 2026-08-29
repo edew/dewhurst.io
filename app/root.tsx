@@ -26,7 +26,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
-        <ScrollRestoration />
+        {/* keyed by pathname so returning to a page restores its scroll
+            even via a normal link, not only the back button */}
+        <ScrollRestoration getKey={(location) => location.pathname} />
         <Scripts />
       </body>
     </html>
