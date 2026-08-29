@@ -1,5 +1,4 @@
 :root {
-  /* midnight at the top, easing to a slightly lighter pre-dawn blue */
   --sky: #070a18;
   --sky-deep: #0a0e22;
   --haze: #0e1430;
@@ -13,12 +12,9 @@
   --ink-soft: #93a5d6;
   --link: #a9c1f5;
 
-  /* no webfonts: ui-rounded is SF Rounded on Apple platforms,
-     Arial Rounded MT Bold covers most Windows/Office installs,
-     and system-ui is the clean fallback everywhere else */
   --font-round:
-    ui-rounded, "Arial Rounded MT Bold", "Hiragino Maru Gothic ProN",
-    system-ui, sans-serif;
+    ui-rounded, "Arial Rounded MT Bold", "Hiragino Maru Gothic ProN", system-ui,
+    sans-serif;
 }
 
 * {
@@ -26,12 +22,6 @@
   box-sizing: border-box;
 }
 
-/* ============================================================
-   Pixel-anchored gradient on the body. Sky ends at a fixed depth
-   no matter how tall the page grows; the 100% stop is always the
-   true bottom, so the descent zone stretches to absorb any
-   content length.
-   ============================================================ */
 body {
   background: linear-gradient(
     var(--sky) 0,
@@ -43,21 +33,15 @@ body {
     var(--deep) 86%,
     var(--void) 100%
   );
-  /* absolutely-positioned strata can hang past the layout height —
-     without these the gradient would tile sky into that gap */
   background-repeat: no-repeat;
   background-color: var(--void);
   font-family: var(--font-round);
   color: var(--bone);
   overflow-x: hidden;
   min-height: 100vh;
-  /* anchors #strata's inset: 0 to the full document height */
   position: relative;
 }
 
-/* keeps the text above the positioned strata bands; the bottom
-   padding gives the last band room to breathe and stops the last
-   element's margin collapsing out of the document */
 main {
   position: relative;
   z-index: 2;
@@ -103,11 +87,6 @@ pre code {
   font-size: 0.82rem;
 }
 
-/* form controls in embedded post components (the french drill's text
-   input, pulsar-clone's textarea and select) otherwise render with
-   the browser's native white chrome, which clashes with the night
-   sky. Lift them the same way code is lifted, off the page rather
-   than off a plain background. */
 input,
 textarea,
 select,
@@ -137,8 +116,6 @@ input[type="button"],
 input[type="reset"] {
   cursor: pointer;
 }
-/* strip the native glossy dropdown chrome; a hand-drawn chevron
-   stands in for the arrow that appearance: none takes with it */
 select {
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23cbc4ae' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
@@ -148,11 +125,8 @@ select {
   cursor: pointer;
 }
 
-/* ---------- home: hero under the starry sky ---------- */
 .hero {
-  /* short of the full viewport so the first ridge shows above
-     the fold — the page visibly continues */
-  min-height: 68vh;
+  min-height: 50vh;
   display: grid;
   place-content: center;
   text-align: center;
@@ -172,8 +146,6 @@ select {
   color: var(--ink-soft);
 }
 
-/* twinkling stars: little dots that wink in and out, fading away
-   where the landscape begins */
 #stars {
   position: absolute;
   inset: 0;
@@ -188,8 +160,6 @@ select {
   border-radius: 50%;
   background: #dfe8ff;
   box-shadow: 0 0 6px 1px rgba(205, 220, 255, 0.35);
-  /* the trough of the wink, kept in a variable because the keyframes
-     need the same number and light mode lowers both together */
   --star-dim: 0.05;
   opacity: var(--star-dim);
   animation: wink var(--wink, 4s) ease-in-out infinite;
@@ -206,18 +176,11 @@ select {
   }
 }
 
-/* wispy stratus streaks over the daylight hero — hidden here, shown
-   by the light media query at the end of this file. Small closed lens
-   shapes in the strata bands' billow language, a solid streak with a
-   translucent echo behind it. Drift is a slow horizontal translateX
-   wobble only — cheap to composite, never touches layout or filter. */
 #clouds {
   display: none;
   position: absolute;
   inset: 0;
-  z-index: -1; /* same layer as #stars: behind the hero text */
-  overflow: hidden; /* the drift wobble must never open a scrollbar */
-  pointer-events: none;
+  z-index: -1;  overflow: hidden;  pointer-events: none;
 }
 .wisp {
   position: absolute;
@@ -229,8 +192,6 @@ select {
   height: auto;
   overflow: visible;
 }
-/* the echo: set behind the solid streak by CSS offset alone, larger
-   and at 0.45 opacity — the strata bands' depth trick */
 .wisp svg.echo {
   position: absolute;
   top: -16%;
@@ -254,8 +215,6 @@ select {
   width: 17%;
   animation-name: drift-c;
 }
-/* w4 is echo-only — no solid front streak — a third, fainter depth
-   tier drifting between the two solid streaks */
 .wisp.w4 {
   top: 25%;
   right: 22%;
@@ -292,16 +251,11 @@ select {
   }
 }
 
-/* ---------- home: the posts, one entry per layer ---------- */
 .posts {
   list-style: none;
   margin: 0;
   padding: 0;
-  /* start the list below the first band's bumps: the band tops out at
-     72vh and its edge is 8.33% of the width tall, while the hero ends
-     at 68vh — without this the first entry sits on the bumpy edge on
-     wide screens */
-  padding-top: 8.5vw;
+  padding-top: calc(6vh + 8.5vw);
 }
 .stratum {
   max-width: 34rem;
@@ -325,7 +279,6 @@ select {
   text-align: left;
 }
 
-/* ---------- post pages ---------- */
 .site-header {
   position: relative;
   z-index: 2;
@@ -354,7 +307,6 @@ article > header h1 {
   font-size: clamp(1.9rem, 5vw, 2.6rem);
   margin-top: 0.5rem;
 }
-/* the * reset removes default flow margins — restore them for prose */
 article :is(p, ul, ol, pre, blockquote, table, h2, h3, h4) {
   margin-block: 1rem;
 }
@@ -371,30 +323,15 @@ article :is(h2, h3, h4) {
     opacity: 0.7;
   }
   .wisp {
-    /* clouds stay put but stay visible — only the drift stops */
     animation: none;
   }
 }
 
-/* ============================================================
-   The billowed strata behind the home page. Each band is static
-   SVG (pre-generated by scripts/generate-strata.mjs) with a
-   translucent second silhouette floating behind it for depth.
-   Bands are pinned with a percentage top and a bottom chained to
-   the next band's top, so they track the document height with no
-   JavaScript: the rock body is a flex filler between the edge and
-   the band's bottom, which runs one edge-height (8.34vw) under
-   the next band's edge SVG so the transparent area above that
-   curve shows this layer, not the page gradient. The edges keep
-   their drawn 1440:120 aspect ratio and scale uniformly with the
-   page width, so the bumps look the same at every viewport size.
-   ============================================================ */
 #strata {
   position: absolute;
   inset: 0;
   overflow: visible;
-  z-index: 0; /* above the gradient, below the text */
-  pointer-events: none;
+  z-index: 0;  pointer-events: none;
 }
 #strata .band {
   position: absolute;
@@ -402,9 +339,6 @@ article :is(h2, h3, h4) {
   right: 0;
   display: flex;
   flex-direction: column;
-  /* strata.tsx hands every band both palettes as custom properties;
-     these two pick the night set, and the light media query at the
-     end of this file re-points them at the daylight set */
   --band-fill: var(--band-fill-dark);
   --band-body: var(--band-body-dark);
 }
@@ -421,34 +355,18 @@ article :is(h2, h3, h4) {
 #strata .band svg.back {
   position: absolute;
   top: 0;
-  /* -46/1440 of the width: percentage margins resolve against
-     the container's width, so the offset scales with the page */
   margin-top: -3.1944%;
   left: 0;
-  /* stretch to the front edge's bottom so the translucent fill
-     ends where the solid fill has taken over — no visible seam */
   aspect-ratio: 1440 / 166;
 }
 #strata .band .body {
   flex: 1;
   background: var(--band-body);
-  /* tuck under the edge SVG: its fractional-pixel bottom row
-     antialiases against the sky behind it, which reads as a pale
-     hairline on wide screens — solid fill hides it */
   margin-top: -2px;
 }
 
-/* ============================================================
-   Daylight. The same landscape under a bright morning sky: the
-   sky gradient runs pale blue into near-white haze, the ink goes
-   dark, and the stars become faint warm motes of sunlit dust.
-   Everything above stays the night theme untouched — only the
-   values that must change are restated here.
-   ============================================================ */
 @media (prefers-color-scheme: light) {
   :root {
-    /* fresh pale-blue morning at the top, easing down into hazy
-       near-white light at the horizon */
     --sky: #bfe0f5;
     --sky-deep: #cfe8f7;
     --haze: #dcedf7;
@@ -463,8 +381,6 @@ article :is(h2, h3, h4) {
     --link: #2c5aa0;
   }
 
-  /* the overlays that lift code off a dark page have to press into
-     a light one instead */
   code {
     background: rgba(20, 34, 58, 0.08);
   }
@@ -472,8 +388,6 @@ article :is(h2, h3, h4) {
     background: rgba(20, 34, 58, 0.05);
   }
 
-  /* the same lift, pressed into a light page instead (background-color,
-     not the shorthand, so the select keeps its chevron image) */
   input,
   textarea,
   select,
@@ -485,8 +399,6 @@ article :is(h2, h3, h4) {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%234a5872' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   }
 
-  /* daylight motes: soft sunlit specks instead of winking stars —
-     same generator, just warmer and much more subtle */
   #stars i {
     background: #fff6de;
     box-shadow: 0 0 6px 1px rgba(255, 224, 140, 0.4);
@@ -498,15 +410,12 @@ article :is(h2, h3, h4) {
     --band-body: var(--band-body-light);
   }
 
-  /* daylight brings out the clouds */
   #clouds {
     display: block;
   }
 }
 
 @media (prefers-color-scheme: light) and (prefers-reduced-motion: reduce) {
-  /* the still state of a mote is fainter than the still state of a
-     star, for the same reason the wink is */
   #stars i {
     opacity: 0.35;
   }

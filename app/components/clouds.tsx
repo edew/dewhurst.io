@@ -1,11 +1,5 @@
 import type { CSSProperties } from "react";
 
-// Wispy stratus streaks over the daylight hero — the light theme's
-// counterpart to the winking stars. Each streak is a hand-drawn closed
-// lens shape in the strata bands' billow language: flat fills, with a
-// larger 0.45-opacity echo of the same family set behind the solid
-// streak for depth. The fourth wisp is echo-only, a fainter third
-// tier. root.css shows them only under prefers-color-scheme: light.
 export function Clouds() {
   return (
     <div id="clouds" aria-hidden="true">

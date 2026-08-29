@@ -1,8 +1,5 @@
 import { useEffect, useRef } from "react";
 
-// Twinkling stars over the hero — a fresh sky each visit. Generated on
-// the client after mount so the random values never enter server-rendered
-// markup (which would break hydration).
 export function StarField() {
   const ref = useRef<HTMLDivElement>(null);
 

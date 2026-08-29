@@ -1,6 +1,6 @@
 [
   {
-    "top": "72vh",
+    "top": "60vh",
     "bottom": "calc(59% - 8.34vw)",
     "fill": "#111838",
     "bodyBackground": "linear-gradient(#111838, #1c264d)",

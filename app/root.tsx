@@ -26,8 +26,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
-        {/* keyed by pathname so returning to a page restores its scroll
-            even via a normal link, not only the back button */}
         <ScrollRestoration getKey={(location) => location.pathname} />
         <Scripts />
       </body>
@@ -35,8 +33,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-// Each route brings its own chrome: the home page is the hero over the
-// night landscape, post pages carry a small banner linking back to it.
 export default function App() {
   return <Outlet />;
 }

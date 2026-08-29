@@ -1,20 +1,9 @@
 #!/usr/bin/env node
-// Pre-generates the strata band data:
-//   - app/strata-data.json, rendered by app/components/strata.tsx
-//   - the <div id="strata"> block in gradient.html (the prototype),
-//     replaced in place
-// The edge curves come from a seeded generator, so re-running this
-// script is a no-op unless the constants change.
-//
-//   node scripts/generate-strata.mjs
 
 import { readFileSync, writeFileSync } from "node:fs";
 
 const FILE = new URL("../gradient.html", import.meta.url);
 const SEED = 20260829;
-// The page CSS gives each edge svg an aspect-ratio matching this
-// viewBox, so the whole drawing scales uniformly with the page width
-// (same bumps at every viewport size, just smaller on phones).
 const VIEW_W = 1440;
 const VIEW_H = 120;
 
@@ -29,10 +18,6 @@ function mulberry32(a) {
 }
 let rand;
 
-// A smooth cloud-like edge: three octaves of sine waves sampled across
-// the width, joined with quadratic beziers so there are no corners
-// anywhere. Enough samples that even the highest-frequency octave gets
-// ~10 points per bump — fewer and the curve turns polygonal.
 function billowPath(scale = 1) {
   const n = 144;
   const waves = [
@@ -78,7 +63,6 @@ function lerpHex(a, b, t) {
   );
 }
 
-// multi-stop palette: midnight ranges lightening toward pre-dawn blue
 const PALETTE = [
   "#111838",
   "#182146",
@@ -97,12 +81,6 @@ function paletteAt(t) {
   return lerpHex(PALETTE[i], PALETTE[i + 1], f - i);
 }
 
-// The approved daylight colours for the same five bands: pale rock under a
-// bright sky. These are listed rather than interpolated — they are the exact
-// values signed off in the light prototype, and no simple ramp reproduces
-// them. Each band carries both sets, because the band colours are inline
-// styles: the stylesheet cannot override them, so it picks between the two
-// with prefers-color-scheme instead (see root.css).
 const LIGHT = [
   { fill: "#b9c9dd", bodyBackground: "linear-gradient(#b9c9dd, #c9d7e6)" },
   { fill: "#c7d5e6", bodyBackground: "linear-gradient(#c7d5e6, #d5e0ec)" },
@@ -111,19 +89,13 @@ const LIGHT = [
   { fill: "#f0f5fa", bodyBackground: "linear-gradient(#f0f5fa, #f0f5fa)" },
 ];
 
-// Band anchors: the first billow rolls in just under the 68vh hero —
-// inside the first viewport, so the page visibly continues below the
-// fold — the rest are spread down the document by percentage so the markup
-// needs no runtime measuring. Each band's bottom is chained to the next
-// band's top plus one edge-height of overlap (8.34vw ≈ 120/1440 of the
-// width, rounded up so the overlap never falls short).
-const BANDS = ["72vh", "41%", "58%", "76%", "88%"];
+const BANDS = ["60vh", "41%", "58%", "76%", "88%"];
 
 const bands = BANDS.map((top, i) => {
   const t = i / (BANDS.length - 1);
   const fill = paletteAt(t);
   const fillNext = paletteAt((i + 1) / (BANDS.length - 1));
-  const sweep = 1 + t * 0.25; // deeper layers roll in bigger sweeps
+  const sweep = 1 + t * 0.25;
   rand = mulberry32(SEED ^ ((i + 1) * 0x9e3779b9));
   const back = billowPath(sweep);
   const front = billowPath(sweep);
