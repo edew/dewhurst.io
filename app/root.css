@@ -137,6 +137,16 @@ input[type="button"],
 input[type="reset"] {
   cursor: pointer;
 }
+/* strip the native glossy dropdown chrome; a hand-drawn chevron
+   stands in for the arrow that appearance: none takes with it */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23cbc4ae' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.7em center;
+  padding-right: 2.2em;
+  cursor: pointer;
+}
 
 /* ---------- home: hero under the starry sky ---------- */
 .hero {
@@ -462,13 +472,17 @@ article :is(h2, h3, h4) {
     background: rgba(20, 34, 58, 0.05);
   }
 
-  /* the same lift, pressed into a light page instead */
+  /* the same lift, pressed into a light page instead (background-color,
+     not the shorthand, so the select keeps its chevron image) */
   input,
   textarea,
   select,
   button {
-    background: rgba(20, 34, 58, 0.08);
+    background-color: rgba(20, 34, 58, 0.08);
     border-color: rgba(20, 34, 58, 0.15);
+  }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%234a5872' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   }
 
   /* daylight motes: soft sunlit specks instead of winking stars —
