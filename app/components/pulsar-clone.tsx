@@ -111,7 +111,13 @@ export default function PulsarClone() {
   );
 
   useEffect(() => {
-    textareaRef.current?.focus();
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.focus();
+      // caret at the end of the expression, ready to extend it
+      const end = textarea.value.length;
+      textarea.setSelectionRange(end, end);
+    }
   }, []);
 
   useEffect(() => {
