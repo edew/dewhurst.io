@@ -97,6 +97,20 @@ function paletteAt(t) {
   return lerpHex(PALETTE[i], PALETTE[i + 1], f - i);
 }
 
+// The approved daylight colours for the same five bands: pale rock under a
+// bright sky. These are listed rather than interpolated — they are the exact
+// values signed off in the light prototype, and no simple ramp reproduces
+// them. Each band carries both sets, because the band colours are inline
+// styles: the stylesheet cannot override them, so it picks between the two
+// with prefers-color-scheme instead (see root.css).
+const LIGHT = [
+  { fill: "#b9c9dd", bodyBackground: "linear-gradient(#b9c9dd, #c9d7e6)" },
+  { fill: "#c7d5e6", bodyBackground: "linear-gradient(#c7d5e6, #d5e0ec)" },
+  { fill: "#d6e1ee", bodyBackground: "linear-gradient(#d6e1ee, #e0e9f2)" },
+  { fill: "#e3ebf4", bodyBackground: "linear-gradient(#e3ebf4, #ebf1f7)" },
+  { fill: "#f0f5fa", bodyBackground: "linear-gradient(#f0f5fa, #f0f5fa)" },
+];
+
 // Band anchors: the first billow rolls in just under the 68vh hero —
 // inside the first viewport, so the page visibly continues below the
 // fold — the rest are spread down the document by percentage so the markup
@@ -120,6 +134,8 @@ const bands = BANDS.map((top, i) => {
     bottom: next ? `calc(${100 - parseFloat(next)}% - 8.34vw)` : "0",
     fill,
     bodyBackground: `linear-gradient(${fill}, ${lerpHex(fill, fillNext, 0.65)})`,
+    lightFill: LIGHT[i].fill,
+    lightBodyBackground: LIGHT[i].bodyBackground,
     back,
     front,
   };

@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 import bands from "../strata-data.json";
 
 // The layered night landscape behind the home page. The band shapes are
@@ -11,19 +13,31 @@ export function Strata() {
         <div
           key={band.top}
           className="band"
-          style={{ top: band.top, bottom: band.bottom }}
+          style={
+            {
+              top: band.top,
+              bottom: band.bottom,
+              // both palettes travel as custom properties; root.css decides
+              // which one is in force (an inline fill would beat the media
+              // query, so the colours cannot be applied directly here)
+              "--band-fill-dark": band.fill,
+              "--band-fill-light": band.lightFill,
+              "--band-body-dark": band.bodyBackground,
+              "--band-body-light": band.lightBodyBackground,
+            } as CSSProperties
+          }
         >
           <svg
             className="back"
             viewBox="0 0 1440 120"
             preserveAspectRatio="none"
           >
-            <path d={band.back} fill={band.fill} fillOpacity="0.45" />
+            <path d={band.back} fillOpacity="0.45" />
           </svg>
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-            <path d={band.front} fill={band.fill} />
+            <path d={band.front} />
           </svg>
-          <div className="body" style={{ background: band.bodyBackground }} />
+          <div className="body" />
         </div>
       ))}
     </div>

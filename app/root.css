@@ -143,13 +143,16 @@ pre code {
   border-radius: 50%;
   background: #dfe8ff;
   box-shadow: 0 0 6px 1px rgba(205, 220, 255, 0.35);
-  opacity: 0.05;
+  /* the trough of the wink, kept in a variable because the keyframes
+     need the same number and light mode lowers both together */
+  --star-dim: 0.05;
+  opacity: var(--star-dim);
   animation: wink var(--wink, 4s) ease-in-out infinite;
 }
 @keyframes wink {
   0%,
   100% {
-    opacity: 0.05;
+    opacity: var(--star-dim);
     transform: scale(0.6);
   }
   50% {
@@ -163,6 +166,11 @@ pre code {
   list-style: none;
   margin: 0;
   padding: 0;
+  /* start the list below the first band's bumps: the band tops out at
+     72vh and its edge is 8.33% of the width tall, while the hero ends
+     at 68vh — without this the first entry sits on the bumpy edge on
+     wide screens */
+  padding-top: 8.5vw;
 }
 .stratum {
   max-width: 34rem;
@@ -259,6 +267,14 @@ article :is(h2, h3, h4) {
   right: 0;
   display: flex;
   flex-direction: column;
+  /* strata.tsx hands every band both palettes as custom properties;
+     these two pick the night set, and the light media query at the
+     end of this file re-points them at the daylight set */
+  --band-fill: var(--band-fill-dark);
+  --band-body: var(--band-body-dark);
+}
+#strata .band path {
+  fill: var(--band-fill);
 }
 #strata .band svg {
   display: block;
@@ -280,4 +296,65 @@ article :is(h2, h3, h4) {
 }
 #strata .band .body {
   flex: 1;
+  background: var(--band-body);
+  /* tuck under the edge SVG: its fractional-pixel bottom row
+     antialiases against the sky behind it, which reads as a pale
+     hairline on wide screens — solid fill hides it */
+  margin-top: -2px;
+}
+
+/* ============================================================
+   Daylight. The same landscape under a bright morning sky: the
+   sky gradient runs pale blue into near-white haze, the ink goes
+   dark, and the stars become faint warm motes of sunlit dust.
+   Everything above stays the night theme untouched — only the
+   values that must change are restated here.
+   ============================================================ */
+@media (prefers-color-scheme: light) {
+  :root {
+    /* fresh pale-blue morning at the top, easing down into hazy
+       near-white light at the horizon */
+    --sky: #bfe0f5;
+    --sky-deep: #cfe8f7;
+    --haze: #dcedf7;
+    --field: #e8f3fa;
+    --dusk: #eef6fa;
+    --night: #f1f7fa;
+    --deep: #f4f8fb;
+    --void: #f6f9fb;
+    --bone: #1e2a3d;
+    --bone-dim: #4a5872;
+    --ink-soft: #46618a;
+    --link: #2c5aa0;
+  }
+
+  /* the overlays that lift code off a dark page have to press into
+     a light one instead */
+  code {
+    background: rgba(20, 34, 58, 0.08);
+  }
+  pre {
+    background: rgba(20, 34, 58, 0.05);
+  }
+
+  /* daylight motes: soft sunlit specks instead of winking stars —
+     same generator, just warmer and much more subtle */
+  #stars i {
+    background: #fff6de;
+    box-shadow: 0 0 6px 1px rgba(255, 224, 140, 0.4);
+    --star-dim: 0.03;
+  }
+
+  #strata .band {
+    --band-fill: var(--band-fill-light);
+    --band-body: var(--band-body-light);
+  }
+}
+
+@media (prefers-color-scheme: light) and (prefers-reduced-motion: reduce) {
+  /* the still state of a mote is fainter than the still state of a
+     star, for the same reason the wink is */
+  #stars i {
+    opacity: 0.35;
+  }
 }
