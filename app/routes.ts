@@ -13,4 +13,5 @@ export default (async () => [
       route(post.path.slice(1), `../posts/${post.slug}.mdx`),
     ),
   ),
+  route("*", "routes/not-found.tsx"),
 ])() satisfies RouteConfig;

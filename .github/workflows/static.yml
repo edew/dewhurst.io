@@ -41,10 +41,10 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Build
         run: pnpm build
-      # GitHub Pages serves 404.html (with a 404 status) for unknown paths,
-      # which lets the SPA fallback hydrate and render the app's 404 page
-      - name: Use SPA fallback as the 404 page
-        run: cp build/client/__spa-fallback.html build/client/404.html
+      # GitHub Pages serves 404.html (with a 404 status) for unknown paths.
+      # The prerendered /404 document has the app's 404 page in it already
+      - name: Use the prerendered 404 document as the 404 page
+        run: mv build/client/404/index.html build/client/404.html
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
