@@ -38,6 +38,7 @@ body {
   background-repeat: no-repeat;
   background-color: var(--sky-7);
   font-family: var(--font-round);
+  font-weight: 300;
   color: var(--text);
   overflow-x: hidden;
   min-height: 100vh;
@@ -157,94 +158,18 @@ select {
   border-radius: 50%;
   background: #dfe8ff;
   box-shadow: 0 0 6px 1px rgba(205, 220, 255, 0.35);
-  --star-dim: 0.05;
-  opacity: var(--star-dim);
+  opacity: 0.05;
   animation: wink var(--wink, 4s) ease-in-out infinite;
 }
 @keyframes wink {
   0%,
   100% {
-    opacity: var(--star-dim);
+    opacity: 0.05;
     transform: scale(0.6);
   }
   50% {
     opacity: var(--peak, 1);
     transform: scale(1);
-  }
-}
-
-#clouds {
-  display: none;
-  position: absolute;
-  inset: 0;
-  z-index: -1;  overflow: hidden;  pointer-events: none;
-}
-.wisp {
-  position: absolute;
-  animation: drift-a var(--dur, 84s) ease-in-out var(--delay, 0s) infinite;
-}
-.wisp svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  overflow: visible;
-}
-.wisp svg.echo {
-  position: absolute;
-  top: -16%;
-  left: -7%;
-  width: 114%;
-}
-.wisp.w1 {
-  top: 9%;
-  left: -6%;
-  width: 48%;
-}
-.wisp.w2 {
-  top: 41%;
-  right: -4%;
-  width: 30%;
-  animation-name: drift-b;
-}
-.wisp.w3 {
-  top: 67%;
-  left: 21%;
-  width: 17%;
-  animation-name: drift-c;
-}
-.wisp.w4 {
-  top: 25%;
-  right: 22%;
-  width: 21%;
-}
-.wisp.w4 svg {
-  opacity: 0.75;
-}
-@keyframes drift-a {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(2.6%);
-  }
-}
-@keyframes drift-b {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(-2.2%);
-  }
-}
-@keyframes drift-c {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(1.6%);
   }
 }
 
@@ -312,9 +237,6 @@ article :is(h2, h3, h4) {
     animation: none;
     opacity: 0.7;
   }
-  .wisp {
-    animation: none;
-  }
 }
 
 #hills {
@@ -348,60 +270,4 @@ article :is(h2, h3, h4) {
 #hills .band .body {
   flex: 1;
   margin-top: -2px;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --sky: #bfe0f5;
-    --sky-deep: #cfe8f7;
-    --haze: #dcedf7;
-    --field: #e8f3fa;
-    --dusk: #eef6fa;
-    --night: #f1f7fa;
-    --deep: #f4f8fb;
-    --void: #f6f9fb;
-    --bone: #1e2a3d;
-    --bone-dim: #4a5872;
-    --ink-soft: #46618a;
-    --link: #2c5aa0;
-  }
-
-  code {
-    background: rgba(20, 34, 58, 0.08);
-  }
-  pre {
-    background: rgba(20, 34, 58, 0.05);
-  }
-
-  input,
-  textarea,
-  select,
-  button {
-    background-color: rgba(20, 34, 58, 0.08);
-    border-color: rgba(20, 34, 58, 0.15);
-  }
-  select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%234a5872' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  }
-
-  #stars i {
-    background: #fff6de;
-    box-shadow: 0 0 6px 1px rgba(255, 224, 140, 0.4);
-    --star-dim: 0.03;
-  }
-
-  #strata .band {
-    --band-fill: var(--band-fill-light);
-    --band-body: var(--band-body-light);
-  }
-
-  #clouds {
-    display: block;
-  }
-}
-
-@media (prefers-color-scheme: light) and (prefers-reduced-motion: reduce) {
-  #stars i {
-    opacity: 0.35;
-  }
 }
