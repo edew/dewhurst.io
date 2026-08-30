@@ -1,0 +1,527 @@
+/* The conjugation tables want more room than the 40rem article column, so the
+   whole thing breaks out and centres itself on the viewport instead. The
+   article is centred too, so its centre and the viewport's are the same. */
+.app {
+  position: relative;
+  left: 50%;
+  translate: -50%;
+  width: min(64rem, calc(100vw - 2rem));
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+}
+
+/* ---------------- search ---------------- */
+
+.search {
+  position: relative;
+  margin: 0.9rem auto 0;
+  width: min(34rem, 100%);
+}
+
+.search input {
+  width: 100%;
+  padding-left: 2.4em;
+  padding-right: 2.6em;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.75em;
+  top: 50%;
+  translate: 0 -50%;
+  color: var(--text-dim);
+  pointer-events: none;
+}
+
+.kbd {
+  position: absolute;
+  right: 0.6em;
+  top: 50%;
+  translate: 0 -50%;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  border: 1px solid #ffffff2e;
+  border-radius: 6px;
+  padding: 0.1em 0.45em;
+  pointer-events: none;
+}
+
+/* The live region stays in the tree so that it can announce; empty, it takes
+   no room. */
+.notice {
+  margin: 0.7rem auto 0;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.notice:empty {
+  display: none;
+}
+
+/* ---------------- browse and results ---------------- */
+
+/* No overflow:hidden here — it would clip the focus ring of the first and the
+   last row. The corners are rounded on the children instead. */
+.panel {
+  margin-top: 0.8rem;
+  background: #ffffff0d;
+  border: 1px solid #ffffff1f;
+  border-radius: 10px;
+}
+
+.panel > :first-child {
+  border-top-left-radius: 9px;
+  border-top-right-radius: 9px;
+}
+
+.panel > :last-child {
+  border-bottom: none;
+  border-bottom-left-radius: 9px;
+  border-bottom-right-radius: 9px;
+}
+
+.panelHead {
+  padding: 0.85rem 1.1rem 0.5rem;
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.row,
+.rowForm {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  width: 100%;
+  padding: 0.6rem 1.1rem;
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #ffffff14;
+  border-radius: 0;
+  line-height: 1.35;
+}
+
+/* A thousand rows land in the panel at once. Off-screen ones are not laid out
+   until they are scrolled to; the placeholder height is one row. */
+.row {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 2.6rem;
+}
+
+.row:hover,
+.rowForm:hover,
+.sel {
+  background: #ffffff14;
+}
+
+.rank {
+  flex: none;
+  width: 2.2rem;
+  text-align: right;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.lemmaWrap {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex: none;
+  width: 11rem;
+}
+
+.lemma {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+
+.chipEtre {
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ok);
+  background: #7fdca414;
+  border: 1px solid #7fdca44d;
+  border-radius: 999px;
+  padding: 0.1em 0.5em;
+  white-space: nowrap;
+}
+
+.gloss {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.freq {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex: none;
+}
+
+.bar {
+  display: block;
+  width: 8rem;
+  height: 3px;
+  border-radius: 2px;
+  background: #ffffff1c;
+  overflow: hidden;
+}
+
+.barFill {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--link);
+  opacity: 0.85;
+}
+
+.occ {
+  width: 4rem;
+  text-align: right;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.go {
+  flex: none;
+  color: var(--link);
+}
+
+.form {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--link);
+}
+
+.arrow {
+  color: var(--text-dim);
+}
+
+.what {
+  flex: 1 1 auto;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.panelFoot {
+  margin: 0;
+  padding: 0.75rem 1.1rem;
+  background: #ffffff08;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.loadmore {
+  display: block;
+  width: 100%;
+  padding: 0.85rem 1.1rem;
+  background: #ffffff0f;
+  border: none;
+  border-radius: 0;
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--link);
+}
+
+.loadmore:hover {
+  background: #ffffff1c;
+}
+
+.empty {
+  margin: 0;
+  padding: 1.3rem 1.1rem;
+  border-bottom: 1px solid #ffffff14;
+  text-align: center;
+  color: var(--muted);
+}
+
+.mark {
+  background: none;
+  color: var(--link);
+  font-weight: 600;
+}
+
+/* ---------------- detail ---------------- */
+
+.detail {
+  margin-top: 1.4rem;
+}
+
+.backlink {
+  align-self: flex-start;
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--link);
+  font-size: 0.85rem;
+}
+
+.backlink:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.headword {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.1rem;
+  margin-top: 0.8rem;
+}
+
+.hw {
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  line-height: 1.1;
+}
+
+.ipa {
+  font-size: 1rem;
+  color: var(--text-dim);
+}
+
+.tr {
+  font-size: 1.05rem;
+  color: var(--muted);
+}
+
+.chips {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+  background: #ffffff12;
+  border: 1px solid #ffffff2e;
+  border-radius: 999px;
+  padding: 0.32em 0.8em;
+}
+
+.chipDim {
+  color: var(--text-dim);
+}
+
+.chipOk {
+  color: var(--ok);
+  border-color: #7fdca44d;
+  background: #7fdca414;
+}
+
+.tabs {
+  display: flex;
+  gap: 2px;
+  width: max-content;
+  margin: 1.3rem 0 1rem;
+  padding: 2px;
+  background: #ffffff0d;
+  border: 1px solid #ffffff1f;
+  border-radius: 8px;
+}
+
+.tab {
+  background: none;
+  border: none;
+  border-radius: 6px;
+  padding: 0.45em 1em;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.tab:hover {
+  color: var(--text);
+}
+
+.tabOn {
+  background: #ffffff1f;
+  color: var(--text);
+}
+
+/* The tab panel is a tab stop of its own, and root.css only rings form
+   controls. */
+.cards:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 4px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 0.8rem;
+}
+
+.card {
+  background: #ffffff0d;
+  border: 1px solid #ffffff1f;
+  border-radius: 10px;
+  padding: 0.9rem 1rem 1rem;
+}
+
+.mood {
+  font-size: 0.6rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.tense {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.5rem;
+  margin-top: 0.15rem;
+}
+
+.tenseName {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.tenseEn {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.lit {
+  font-style: italic;
+  opacity: 0.8;
+}
+
+.forms {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.6rem;
+}
+
+.f {
+  display: grid;
+  grid-template-columns: 5.6rem 1fr;
+  gap: 0.6rem;
+  align-items: baseline;
+  padding: 0.12rem 0;
+}
+
+.pr {
+  text-align: right;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.fo {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.strip {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 1rem 2.4rem;
+  margin-top: 1.6rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid #ffffff14;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.k {
+  font-size: 0.6rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.v {
+  font-weight: 600;
+}
+
+.vItalic {
+  font-style: italic;
+}
+
+.varForm {
+  font-weight: 300;
+  color: var(--text-dim);
+}
+
+.en {
+  font-weight: 300;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.enUpright {
+  font-style: normal;
+}
+
+.credit {
+  margin: 2rem auto 0;
+  max-width: 34rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--muted);
+  opacity: 0.75;
+  line-height: 1.6;
+}
+
+@media (max-width: 46rem) {
+  /* Narrow enough that the gloss gets a line of its own, under the lemma and
+     after the frequency bar, rather than being squeezed to an ellipsis. */
+  .row,
+  .rowForm {
+    flex-wrap: wrap;
+    gap: 0.15rem 0.9rem;
+  }
+
+  .lemmaWrap {
+    width: auto;
+  }
+
+  .bar {
+    width: 3.5rem;
+  }
+
+  .gloss {
+    order: 1;
+    flex-basis: 100%;
+    /* Aligned under the lemma: the rank column plus the row gap. */
+    padding-left: 3.1rem;
+  }
+
+  .row {
+    contain-intrinsic-size: auto 4rem;
+  }
+
+  .f {
+    grid-template-columns: 4.6rem 1fr;
+  }
+}
