@@ -28,10 +28,10 @@
   display: none;
 }
 
+/* The answer box is the main typing target, so it is a step larger than the
+   body text. Everything else about it comes from the global control rules. */
 .app input[type="text"] {
-  font-family: inherit;
   font-size: 1.25rem;
-  padding: 0.5rem;
 }
 
 .app .buttons {
@@ -39,13 +39,10 @@
   gap: 1rem;
 }
 
-.app input[type="submit"],
-.app input[type="button"],
-.app .restart {
-  font-family: inherit;
-  font-size: 1rem;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
+.app input[type="submit"]:hover,
+.app input[type="button"]:hover,
+.app .restart:hover {
+  background: #ffffff2e;
 }
 
 .app .feedback {

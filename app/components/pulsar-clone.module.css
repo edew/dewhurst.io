@@ -13,7 +13,12 @@
 .app input,
 .app select,
 .app textarea {
-  font-size: 1.5em;
   flex: 1 1 auto;
   margin-top: 1em;
+}
+
+/* The expression box is the main typing target, so it is a step larger than
+   the body text — the same step the French drill input takes. */
+.app textarea {
+  font-size: 1.25rem;
 }
