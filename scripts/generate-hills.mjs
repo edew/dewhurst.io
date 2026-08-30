@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { writeFileSync } from "node:fs";
 
-const FILE = new URL("../gradient.html", import.meta.url);
 const SEED = 20260829;
 const VIEW_W = 1440;
 const VIEW_H = 120;
@@ -108,24 +107,3 @@ writeFileSync(
   JSON.stringify(bands, null, 2) + "\n",
 );
 console.log(`wrote ${bands.length} bands into app/hills.json`);
-
-let html = `<div id="hills" aria-hidden="true">\n`;
-for (const b of bands) {
-  html +=
-    `      <div class="band" style="top: ${b.top}; bottom: ${b.bottom}">\n` +
-    `        <svg class="back" viewBox="0 0 ${VIEW_W} ${VIEW_H}" preserveAspectRatio="none"><path d="${b.back}" fill="${b.fill}" fill-opacity="0.45"/></svg>\n` +
-    `        <svg viewBox="0 0 ${VIEW_W} ${VIEW_H}" preserveAspectRatio="none"><path d="${b.front}" fill="${b.fill}"/></svg>\n` +
-    `        <div class="body" style="background: ${b.bodyBackground}"></div>\n` +
-    `      </div>\n`;
-}
-html += `    </div>`;
-
-const src = readFileSync(FILE, "utf8");
-const re =
-  /<div id="hills" aria-hidden="true"><\/div>|<div id="hills" aria-hidden="true">[\s\S]*?\n {4}<\/div>/;
-if (!re.test(src)) {
-  console.error("could not find the #hills block in gradient.html");
-  process.exit(1);
-}
-writeFileSync(FILE, src.replace(re, html));
-console.log(`wrote ${BANDS.length} bands into gradient.html`);

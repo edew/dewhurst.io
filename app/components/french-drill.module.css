@@ -24,6 +24,10 @@
   gap: 1rem;
 }
 
+.app form[hidden] {
+  display: none;
+}
+
 .app input[type="text"] {
   font-family: inherit;
   font-size: 1.25rem;

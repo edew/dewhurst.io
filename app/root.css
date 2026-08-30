@@ -1,4 +1,5 @@
 :root {
+  color-scheme: dark;
   --sky-0: #070a18;
   --sky-1: #0a0e22;
   --sky-2: #0e1430;
@@ -30,9 +31,9 @@ body {
     var(--sky-1) 340px,
     var(--sky-2) 760px,
     var(--sky-3) 1200px,
-    var(--sky-4) 45%,
-    var(--sky-5) 68%,
-    var(--sky-6) 86%,
+    var(--sky-4) max(45%, 1500px),
+    var(--sky-5) max(68%, 1800px),
+    var(--sky-6) max(86%, 2100px),
     var(--sky-7) 100%
   );
   background-repeat: no-repeat;
@@ -207,6 +208,12 @@ select {
   text-transform: uppercase;
 }
 
+.error-page {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+}
+
 article {
   max-width: 40rem;
   margin: 0 auto;
@@ -230,9 +237,6 @@ article :is(h2, h3, h4) {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * {
-    scroll-behavior: auto !important;
-  }
   #stars i {
     animation: none;
     opacity: 0.7;
@@ -243,7 +247,8 @@ article :is(h2, h3, h4) {
   position: absolute;
   inset: 0;
   overflow: visible;
-  z-index: 0;  pointer-events: none;
+  z-index: 0;
+  pointer-events: none;
 }
 #hills .band {
   position: absolute;

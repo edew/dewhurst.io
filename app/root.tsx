@@ -21,13 +21,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="icon" href="/favicon.ico" sizes="32x32" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <meta name="theme-color" content="#070a18" />
         <Meta />
         <Links />
       </head>
       <body>
         {children}
         <ScrollRestoration
-          getKey={(location) => location.pathname.replace(/(.)\/$/, "$1")}
+          getKey={(location) => {
+            const pathname = location.pathname.replace(/(.)\/$/, "$1");
+            return pathname === "/" ? pathname : location.key;
+          }}
         />
         <Scripts />
       </body>
@@ -56,7 +60,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main>
+    <main className="error-page">
       <h1>{message}</h1>
       <p>{details}</p>
       {stack && (
