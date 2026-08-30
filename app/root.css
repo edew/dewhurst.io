@@ -1,16 +1,18 @@
 :root {
-  --sky: #070a18;
-  --sky-deep: #0a0e22;
-  --haze: #0e1430;
-  --field: #172041;
-  --dusk: #263259;
-  --night: #324168;
-  --deep: #3e5077;
-  --void: #4a5f87;
-  --bone: #f3efe2;
-  --bone-dim: #cbc4ae;
-  --ink-soft: #93a5d6;
+  --sky-0: #070a18;
+  --sky-1: #0a0e22;
+  --sky-2: #0e1430;
+  --sky-3: #172041;
+  --sky-4: #263259;
+  --sky-5: #2d3a64;
+  --sky-6: #344471;
+  --sky-7: #3a4b70;
+  --text: #f3efe2;
+  --text-dim: #b0bfe6;
   --link: #a9c1f5;
+  --ok: #7fdca4;
+  --bad: #ffb1b1;
+  --muted: #bcc6da;
 
   --font-round:
     ui-rounded, "Arial Rounded MT Bold", "Hiragino Maru Gothic ProN", system-ui,
@@ -24,19 +26,19 @@
 
 body {
   background: linear-gradient(
-    var(--sky) 0,
-    var(--sky-deep) 340px,
-    var(--haze) 760px,
-    var(--field) 1200px,
-    var(--dusk) 45%,
-    var(--night) 68%,
-    var(--deep) 86%,
-    var(--void) 100%
+    var(--sky-0) 0,
+    var(--sky-1) 340px,
+    var(--sky-2) 760px,
+    var(--sky-3) 1200px,
+    var(--sky-4) 45%,
+    var(--sky-5) 68%,
+    var(--sky-6) 86%,
+    var(--sky-7) 100%
   );
   background-repeat: no-repeat;
-  background-color: var(--void);
+  background-color: var(--sky-7);
   font-family: var(--font-round);
-  color: var(--bone);
+  color: var(--text);
   overflow-x: hidden;
   min-height: 100vh;
   position: relative;
@@ -58,12 +60,12 @@ a:focus-visible {
   text-underline-offset: 0.2em;
 }
 
-time.m {
+time {
   display: block;
   font-size: 0.72rem;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--ink-soft);
+  color: var(--text-dim);
 }
 
 code {
@@ -100,7 +102,7 @@ button {
 }
 input::placeholder,
 textarea::placeholder {
-  color: var(--ink-soft);
+  color: var(--text-dim);
   opacity: 1;
 }
 input:focus-visible,
@@ -139,11 +141,6 @@ select {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   line-height: 1.1;
-}
-.hero > p {
-  margin-top: 0.6rem;
-  font-size: 1.05rem;
-  color: var(--ink-soft);
 }
 
 #stars {
@@ -257,35 +254,28 @@ select {
   padding: 0;
   padding-top: calc(6vh + 8.5vw);
 }
-.stratum {
+.post {
   max-width: 34rem;
   margin: 5vh auto;
   padding: 0 1.5rem;
   position: relative;
   text-align: center;
 }
-.stratum h2 {
+.post h2 {
   font-weight: 600;
   font-size: 1.65rem;
   margin: 0.4rem 0 0.7rem;
 }
-.stratum h2 a {
+.post h2 a {
   color: inherit;
 }
-.stratum > p {
-  line-height: 1.7;
-  font-size: 0.95rem;
-  opacity: 0.88;
-  text-align: left;
-}
-
 .site-header {
   position: relative;
   z-index: 2;
   padding: 1.2rem 1.5rem;
 }
 .site-header a {
-  color: var(--bone);
+  color: var(--text);
   font-weight: 700;
   font-size: 0.85rem;
   letter-spacing: 0.25em;
@@ -327,41 +317,36 @@ article :is(h2, h3, h4) {
   }
 }
 
-#strata {
+#hills {
   position: absolute;
   inset: 0;
   overflow: visible;
   z-index: 0;  pointer-events: none;
 }
-#strata .band {
+#hills .band {
   position: absolute;
   left: 0;
   right: 0;
+  min-height: 8.34vw;
   display: flex;
   flex-direction: column;
-  --band-fill: var(--band-fill-dark);
-  --band-body: var(--band-body-dark);
 }
-#strata .band path {
-  fill: var(--band-fill);
-}
-#strata .band svg {
+#hills .band svg {
   display: block;
   width: 100%;
   height: auto;
   aspect-ratio: 1440 / 120;
   flex: none;
 }
-#strata .band svg.back {
+#hills .band svg.back {
   position: absolute;
   top: 0;
   margin-top: -3.1944%;
   left: 0;
   aspect-ratio: 1440 / 166;
 }
-#strata .band .body {
+#hills .band .body {
   flex: 1;
-  background: var(--band-body);
   margin-top: -2px;
 }
 

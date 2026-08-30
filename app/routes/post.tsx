@@ -43,9 +43,7 @@ export default function Post({ loaderData }: Route.ComponentProps) {
       <main>
         <article>
           <header>
-            <time className="m" dateTime={loaderData.date}>
-              {loaderData.dateFormatted}
-            </time>
+            <time dateTime={loaderData.date}>{loaderData.dateFormatted}</time>
             <h1>{loaderData.title}</h1>
           </header>
           <section>

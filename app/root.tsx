@@ -26,7 +26,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
-        <ScrollRestoration getKey={(location) => location.pathname} />
+        <ScrollRestoration
+          getKey={(location) => location.pathname.replace(/(.)\/$/, "$1")}
+        />
         <Scripts />
       </body>
     </html>

@@ -6,7 +6,7 @@
 }
 
 .app .progress {
-  color: #595959;
+  color: var(--muted);
   font-style: italic;
   margin: 0 0 0.5rem;
 }
@@ -51,15 +51,15 @@
 }
 
 .app .feedback.correct {
-  color: #1a7f37;
+  color: var(--ok);
 }
 
 .app .feedback.wrong {
-  color: #b00020;
+  color: var(--bad);
 }
 
 .app .feedback.revealed {
-  color: #595959;
+  color: var(--muted);
   font-style: normal;
 }
 

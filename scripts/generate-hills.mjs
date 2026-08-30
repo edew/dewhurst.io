@@ -65,15 +65,15 @@ function lerpHex(a, b, t) {
 
 const PALETTE = [
   "#111838",
-  "#182146",
-  "#202b55",
-  "#293663",
-  "#324272",
-  "#3c4f81",
-  "#475d90",
-  "#526b9f",
-  "#5e79ae",
-  "#6a88bd",
+  "#161e3e",
+  "#1a2344",
+  "#1f294b",
+  "#232f51",
+  "#283457",
+  "#2c3a5d",
+  "#314064",
+  "#35456a",
+  "#3a4b70",
 ];
 function paletteAt(t) {
   const f = Math.min(0.9999, Math.max(0, t)) * (PALETTE.length - 1);
@@ -81,15 +81,7 @@ function paletteAt(t) {
   return lerpHex(PALETTE[i], PALETTE[i + 1], f - i);
 }
 
-const LIGHT = [
-  { fill: "#b9c9dd", bodyBackground: "linear-gradient(#b9c9dd, #c9d7e6)" },
-  { fill: "#c7d5e6", bodyBackground: "linear-gradient(#c7d5e6, #d5e0ec)" },
-  { fill: "#d6e1ee", bodyBackground: "linear-gradient(#d6e1ee, #e0e9f2)" },
-  { fill: "#e3ebf4", bodyBackground: "linear-gradient(#e3ebf4, #ebf1f7)" },
-  { fill: "#f0f5fa", bodyBackground: "linear-gradient(#f0f5fa, #f0f5fa)" },
-];
-
-const BANDS = ["60vh", "41%", "58%", "76%", "88%"];
+const BANDS = ["min(60vh, 30%)", "41%", "58%", "76%", "88%"];
 
 const bands = BANDS.map((top, i) => {
   const t = i / (BANDS.length - 1);
@@ -106,20 +98,18 @@ const bands = BANDS.map((top, i) => {
     bottom: next ? `calc(${100 - parseFloat(next)}% - 8.34vw)` : "0",
     fill,
     bodyBackground: `linear-gradient(${fill}, ${lerpHex(fill, fillNext, 0.65)})`,
-    lightFill: LIGHT[i].fill,
-    lightBodyBackground: LIGHT[i].bodyBackground,
     back,
     front,
   };
 });
 
 writeFileSync(
-  new URL("../app/strata-data.json", import.meta.url),
+  new URL("../app/hills.json", import.meta.url),
   JSON.stringify(bands, null, 2) + "\n",
 );
-console.log(`wrote ${bands.length} bands into app/strata-data.json`);
+console.log(`wrote ${bands.length} bands into app/hills.json`);
 
-let html = `<div id="strata" aria-hidden="true">\n`;
+let html = `<div id="hills" aria-hidden="true">\n`;
 for (const b of bands) {
   html +=
     `      <div class="band" style="top: ${b.top}; bottom: ${b.bottom}">\n` +
@@ -132,9 +122,9 @@ html += `    </div>`;
 
 const src = readFileSync(FILE, "utf8");
 const re =
-  /<div id="strata" aria-hidden="true"><\/div>|<div id="strata" aria-hidden="true">[\s\S]*?\n {4}<\/div>/;
+  /<div id="hills" aria-hidden="true"><\/div>|<div id="hills" aria-hidden="true">[\s\S]*?\n {4}<\/div>/;
 if (!re.test(src)) {
-  console.error("could not find the #strata block in gradient.html");
+  console.error("could not find the #hills block in gradient.html");
   process.exit(1);
 }
 writeFileSync(FILE, src.replace(re, html));
