@@ -17,7 +17,7 @@ const stars = (() => {
   return Array.from({ length: STAR_COUNT }, () => {
     const left = (random() * 100).toFixed(2);
     const top = (random() * 100).toFixed(2);
-    const size = (0.8 + random() * 2.4).toFixed(1);
+    const size = (1.2 + random() * 3).toFixed(1);
     const wink = (2.5 + random() * 4.5).toFixed(2);
     const delay = (-random() * 7).toFixed(2);
     const peak = (0.5 + random() * 0.5).toFixed(2);

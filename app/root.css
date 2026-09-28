@@ -46,7 +46,7 @@ body {
   background-repeat: no-repeat;
   background-color: var(--sky-7);
   font-family: var(--font-round);
-  font-weight: 300;
+  font-weight: 400;
   color: var(--text);
   overflow-x: hidden;
   min-height: 100vh;
@@ -144,19 +144,17 @@ select {
 }
 
 .hero {
-  min-height: 50vh;
-  display: grid;
-  place-content: center;
-  text-align: center;
-  padding: 2rem;
+  min-height: 20vh;
   position: relative;
 }
-.hero h1 {
-  font-weight: 700;
-  font-size: clamp(2.8rem, 7vw, 5rem);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  line-height: 1.1;
+/* Read out by screen readers, but the home page shows only the night sky. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 #stars {
@@ -192,7 +190,6 @@ select {
   list-style: none;
   margin: 0;
   padding: 0;
-  padding-top: calc(6vh + 8.5vw);
 }
 .post {
   max-width: 34rem;
@@ -255,38 +252,4 @@ article :is(h2, h3, h4) {
     animation: none;
     opacity: 0.7;
   }
-}
-
-#hills {
-  position: absolute;
-  inset: 0;
-  overflow: visible;
-  z-index: 0;
-  pointer-events: none;
-}
-#hills .band {
-  position: absolute;
-  left: 0;
-  right: 0;
-  min-height: 8.34vw;
-  display: flex;
-  flex-direction: column;
-}
-#hills .band svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 1440 / 120;
-  flex: none;
-}
-#hills .band svg.back {
-  position: absolute;
-  top: 0;
-  margin-top: -3.1944%;
-  left: 0;
-  aspect-ratio: 1440 / 166;
-}
-#hills .band .body {
-  flex: 1;
-  margin-top: -2px;
 }

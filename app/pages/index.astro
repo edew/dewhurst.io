@@ -1,5 +1,4 @@
 ---
-import { Hills } from "../components/hills";
 import { StarField } from "../components/star-field";
 import Document from "../layouts/Document.astro";
 import { formatDate, getPosts, isoDate, postPath } from "../posts";
@@ -12,11 +11,10 @@ const posts = await getPosts();
   description="A blog for me"
   title="For Me"
 >
-  <Hills />
   <main>
     <header class="hero">
       <StarField />
-      <h1>For Me</h1>
+      <h1 class="visually-hidden">For Me</h1>
     </header>
     <ol class="posts">
       {
