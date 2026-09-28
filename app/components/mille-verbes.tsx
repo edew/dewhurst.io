@@ -6,7 +6,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { useSearchParams } from "react-router";
 
 import {
   COMPOUND_CARDS,
@@ -26,6 +25,7 @@ import {
   type Verb,
 } from "./mille-verbes-data";
 import styles from "./mille-verbes.module.css";
+import { useSearchParam } from "./use-search-param";
 
 /* ---------------- small pieces ---------------- */
 
@@ -415,10 +415,11 @@ export default function MilleVerbes() {
 
   // Which verb is open lives in the URL, so that a detail view can be linked
   // to and the browser's back button returns to the list. The page is
-  // prerendered without search params, so the parameter is only read in an
-  // effect — reading it while rendering would not match the served HTML.
-  const [searchParams, setSearchParams] = useSearchParams();
-  const wanted = searchParams.get("v") ?? "";
+  // prerendered without search params, which useSearchParam allows for.
+  // Opening a verb pushes ?v=<lemme> — one history entry, so that the back
+  // button returns to the list. Closing it replaces, so that the entry does
+  // not linger in front of the list.
+  const [wanted, open, close] = useSearchParam("v");
   const [lemma, setLemma] = useState("");
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -481,37 +482,6 @@ export default function MilleVerbes() {
       });
   }, [full]);
 
-  // Opening a verb pushes ?v=<lemme> — one history entry, so that the back
-  // button returns to the list. Closing it replaces, so that the entry does
-  // not linger in front of the list.
-  const open = useCallback(
-    (target: string) => {
-      setSearchParams(
-        (prev) => {
-          const next = new URLSearchParams(prev);
-
-          next.set("v", target);
-
-          return next;
-        },
-        { preventScrollReset: true },
-      );
-    },
-    [setSearchParams],
-  );
-
-  const close = useCallback(() => {
-    setSearchParams(
-      (prev) => {
-        const next = new URLSearchParams(prev);
-
-        next.delete("v");
-
-        return next;
-      },
-      { preventScrollReset: true, replace: true },
-    );
-  }, [setSearchParams]);
 
   // "/" focuses the search box, escape clears it and goes back to the list.
   useEffect(() => {

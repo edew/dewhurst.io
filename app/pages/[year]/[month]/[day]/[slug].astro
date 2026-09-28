@@ -1,0 +1,44 @@
+---
+import { render } from "astro:content";
+
+import Document from "../../../../layouts/Document.astro";
+import {
+  formatDate,
+  getPosts,
+  isoDate,
+  postParams,
+  postPath,
+  type Post,
+} from "../../../../posts";
+
+export async function getStaticPaths() {
+  return (await getPosts()).map((post) => ({
+    params: postParams(post),
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props as { post: Post };
+const { Content } = await render(post);
+---
+
+<Document
+  canonical={`https://www.dewhurst.io${postPath(post)}`}
+  description={post.data.description}
+  title={`${post.data.title} | For Me`}
+>
+  <header class="site-header" role="banner">
+    <a href="/">For Me</a>
+  </header>
+  <main>
+    <article>
+      <header>
+        <time datetime={isoDate(post)}>{formatDate(post)}</time>
+        <h1>{post.data.title}</h1>
+      </header>
+      <section>
+        <Content />
+      </section>
+    </article>
+  </main>
+</Document>

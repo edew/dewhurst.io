@@ -41,16 +41,12 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Build
         run: pnpm build
-      # GitHub Pages serves 404.html (with a 404 status) for unknown paths.
-      # The prerendered /404 document has the app's 404 page in it already
-      - name: Use the prerendered 404 document as the 404 page
-        run: mv build/client/404/index.html build/client/404.html
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "./build/client"
+          path: "./dist"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

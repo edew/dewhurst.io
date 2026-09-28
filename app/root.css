@@ -20,6 +20,13 @@
     sans-serif;
 }
 
+/* Pages cross-fade into each other when navigating within the site */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
 * {
   margin: 0;
   box-sizing: border-box;

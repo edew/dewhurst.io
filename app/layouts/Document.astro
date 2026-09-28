@@ -1,0 +1,38 @@
+---
+import "../root.css";
+
+interface Props {
+  canonical?: string;
+  description: string;
+  robots?: string;
+  title: string;
+}
+
+const { canonical, description, robots, title } = Astro.props;
+
+// Navigating to another page on the site starts loading it when a link is
+// hovered or pressed, so it is usually ready by the time it is clicked.
+const speculationRules = JSON.stringify({
+  prerender: [{ where: { href_matches: "/*" }, eagerness: "moderate" }],
+});
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {robots && <meta name="robots" content={robots} />}
+    {canonical && <link rel="canonical" href={canonical} />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#070a18" />
+    <script type="speculationrules" is:inline set:html={speculationRules} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

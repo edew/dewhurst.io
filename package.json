@@ -4,28 +4,16 @@
   "type": "module",
   "packageManager": "pnpm@11.22.0",
   "scripts": {
-    "build": "react-router build",
-    "dev": "react-router dev",
-    "typecheck": "react-router typegen && tsc"
+    "build": "astro build",
+    "dev": "astro dev",
+    "typecheck": "astro check"
   },
   "dependencies": {
-    "@react-router/node": "^8",
-    "isbot": "^5",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
-    "react-router": "^8"
-  },
-  "devDependencies": {
-    "@mdx-js/rollup": "^3.1.1",
-    "@react-router/dev": "^8",
-    "@types/node": "^22",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
-    "gray-matter": "^4.0.3",
-    "remark-frontmatter": "^5.0.0",
-    "remark-mdx-frontmatter": "^5.2.0",
-    "typescript": "^5.9.3",
-    "vite": "^8.0.3"
+    "@astrojs/mdx": "^8.0.2",
+    "@astrojs/react": "^7.0.0",
+    "astro": "^7.3.5",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
   },
   "repository": {
     "type": "git",
@@ -35,5 +23,11 @@
   "bugs": {
     "url": "https://github.com/edew/dewhurst.io/issues"
   },
-  "homepage": "https://github.com/edew/dewhurst.io#readme"
+  "homepage": "https://github.com/edew/dewhurst.io#readme",
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "^6.0.3"
+  }
 }
