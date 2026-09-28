@@ -1,55 +1,43 @@
+/* Terminal native: on the page's character grid and at the one text size.
+   The answer box is the site's standard input. */
 .app {
   display: flex;
   flex-direction: column;
-  margin: auto;
-  max-width: 40rem;
+}
+
+.app p {
+  margin: 0;
 }
 
 .app .progress {
-  color: var(--muted);
-  font-style: italic;
-  margin: 0 0 0.5rem;
+  color: var(--text-dim);
 }
 
 .app .prompt {
-  font-size: 1.8rem;
   font-weight: 700;
-  line-height: 1.25;
-  margin: 0 0 1.5rem;
-  min-height: 2.2rem;
+  margin-top: 1.5em;
+  min-height: 1.5em;
 }
 
 .app form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5em;
+  margin-top: 1.5em;
 }
 
 .app form[hidden] {
   display: none;
 }
 
-/* The answer box is the main typing target, so it is a step larger than the
-   body text. Everything else about it comes from the global control rules. */
-.app input[type="text"] {
-  font-size: 1.25rem;
-}
-
 .app .buttons {
   display: flex;
-  gap: 1rem;
-}
-
-.app input[type="submit"]:hover,
-.app input[type="button"]:hover,
-.app .restart:hover {
-  background: #ffffff2e;
+  gap: 2ch;
 }
 
 .app .feedback {
-  min-height: 1.5rem;
-  margin: 1rem 0 0;
-  font-style: italic;
+  min-height: 1.5em;
+  margin-top: 1.5em;
 }
 
 .app .feedback.correct {
@@ -62,7 +50,6 @@
 
 .app .feedback.revealed {
   color: var(--muted);
-  font-style: normal;
 }
 
 .app .restart {

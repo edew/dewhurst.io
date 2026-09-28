@@ -1,24 +1,45 @@
+/* Terminal native: the 32 by 32 grid is drawn in characters rather than on a
+   canvas, coloured by a rainbow running across its columns. */
 .app {
   display: flex;
   flex-direction: column;
-  margin: auto;
-  max-width: 400px;
+  gap: 1.5em;
 }
 
-.app canvas {
-  width: 100%;
-  aspect-ratio: 1;
+/* 64 characters wide; the text shrinks on screens too narrow to fit them */
+.screen {
+  align-self: flex-start;
+  font-size: min(1em, calc((100vw - 2rem) / 38.6));
+  line-height: 1.2;
+  margin: 0 auto;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  overflow: hidden;
+  --lightness: 50%;
+  background: linear-gradient(
+    to right,
+    hsl(0 100% var(--lightness)),
+    hsl(60 100% var(--lightness)),
+    hsl(120 100% var(--lightness)),
+    hsl(180 100% var(--lightness)),
+    hsl(240 100% var(--lightness)),
+    hsl(300 100% var(--lightness)),
+    hsl(360 100% var(--lightness))
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-.app input,
-.app select,
+/* Darker by day, so that yellow and cyan still show on paper */
+@media (prefers-color-scheme: light) {
+  .screen {
+    --lightness: 36%;
+  }
+}
+
 .app textarea {
-  flex: 1 1 auto;
-  margin-top: 1em;
-}
-
-/* The expression box is the main typing target, so it is a step larger than
-   the body text — the same step the French drill input takes. */
-.app textarea {
-  font-size: 1.25rem;
+  field-sizing: content;
+  resize: none;
 }

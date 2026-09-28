@@ -1,59 +1,35 @@
-/* The conjugation tables want more room than the 40rem article column, so the
-   whole thing breaks out and centres itself on the viewport instead. The
-   article is centred too, so its centre and the viewport's are the same. */
+/* Terminal native: everything sits on the page's character grid, at the one
+   text size, inside the 80-column page. Structure comes from columns and
+   brightness; a selected or hovered row is drawn in inverse video. */
 .app {
-  position: relative;
-  left: 50%;
-  translate: -50%;
-  width: min(64rem, calc(100vw - 2rem));
   display: flex;
   flex-direction: column;
-  font-size: 0.95rem;
+}
+
+/* Buttons take the site's standard style, except the list rows, which are
+   buttons only so that they can be clicked and focused. */
+.row,
+.rowForm {
+  border: none;
+  padding: 0;
+  background: none;
+  text-align: left;
 }
 
 /* ---------------- search ---------------- */
 
 .search {
-  position: relative;
-  margin: 0.9rem auto 0;
-  width: min(34rem, 100%);
+  margin-top: 1.5em;
 }
 
 .search input {
   width: 100%;
-  padding-left: 2.4em;
-  padding-right: 2.6em;
-}
-
-.searchIcon {
-  position: absolute;
-  left: 0.75em;
-  top: 50%;
-  translate: 0 -50%;
-  color: var(--text-dim);
-  pointer-events: none;
-}
-
-.kbd {
-  position: absolute;
-  right: 0.6em;
-  top: 50%;
-  translate: 0 -50%;
-  font-size: 0.7rem;
-  color: var(--text-dim);
-  border: 1px solid #ffffff2e;
-  border-radius: 6px;
-  padding: 0.1em 0.45em;
-  pointer-events: none;
 }
 
 /* The live region stays in the tree so that it can announce; empty, it takes
    no room. */
 .notice {
-  margin: 0.7rem auto 0;
   color: var(--text-dim);
-  font-size: 0.85rem;
-  text-align: center;
 }
 
 .notice:empty {
@@ -62,263 +38,168 @@
 
 /* ---------------- browse and results ---------------- */
 
-/* No overflow:hidden here — it would clip the focus ring of the first and the
-   last row. The corners are rounded on the children instead. */
 .panel {
-  margin-top: 0.8rem;
-  background: #ffffff0d;
-  border: 1px solid #ffffff1f;
-  border-radius: 10px;
-}
-
-.panel > :first-child {
-  border-top-left-radius: 9px;
-  border-top-right-radius: 9px;
-}
-
-.panel > :last-child {
-  border-bottom: none;
-  border-bottom-left-radius: 9px;
-  border-bottom-right-radius: 9px;
+  margin-top: 1.5em;
 }
 
 .panelHead {
-  padding: 0.85rem 1.1rem 0.5rem;
-  font-size: 0.66rem;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
   color: var(--text-dim);
+  margin-bottom: 1.5em;
 }
 
+/* rank, lemma, gloss, bar, occurrences per million */
 .row,
 .rowForm {
-  display: flex;
-  align-items: baseline;
-  gap: 0.9rem;
+  display: grid;
+  grid-template-columns: 4ch 22ch 1fr 10ch 7ch;
+  column-gap: 1ch;
   width: 100%;
-  padding: 0.6rem 1.1rem;
-  text-align: left;
-  background: none;
-  border: none;
-  border-bottom: 1px solid #ffffff14;
-  border-radius: 0;
-  line-height: 1.35;
+}
+
+.rowForm {
+  grid-template-columns: auto auto auto 1fr;
+  padding-left: 5ch;
 }
 
 /* A thousand rows land in the panel at once. Off-screen ones are not laid out
-   until they are scrolled to; the placeholder height is one row. */
+   until they are scrolled to; the placeholder height is one line. */
 .row {
   content-visibility: auto;
-  contain-intrinsic-size: auto 2.6rem;
+  contain-intrinsic-size: auto 1.5em;
 }
 
-.row:hover,
-.rowForm:hover,
-.sel {
-  background: #ffffff14;
+.app .row:hover,
+.app .rowForm:hover,
+.app .sel {
+  background: var(--text);
+  color: var(--sky);
+}
+
+.row:hover *,
+.rowForm:hover *,
+.sel * {
+  color: inherit !important;
 }
 
 .rank {
-  flex: none;
-  width: 2.2rem;
   text-align: right;
-  font-size: 0.8rem;
   color: var(--text-dim);
-  font-variant-numeric: tabular-nums;
 }
 
 .lemmaWrap {
-  display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
-  flex: none;
-  width: 11rem;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .lemma {
-  font-weight: 600;
-  font-size: 1.05rem;
-  color: var(--text);
+  font-weight: 700;
 }
 
 .chipEtre {
-  font-size: 0.6rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  margin-left: 1ch;
   color: var(--ok);
-  background: #7fdca414;
-  border: 1px solid #7fdca44d;
-  border-radius: 999px;
-  padding: 0.1em 0.5em;
-  white-space: nowrap;
+}
+.chipEtre::before {
+  content: "[";
+}
+.chipEtre::after {
+  content: "]";
 }
 
 .gloss {
-  flex: 1 1 auto;
   min-width: 0;
-  font-size: 0.85rem;
   color: var(--muted);
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: clip;
   white-space: nowrap;
 }
 
-.freq {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  flex: none;
-}
-
 .bar {
-  display: block;
-  width: 8rem;
-  height: 3px;
-  border-radius: 2px;
-  background: #ffffff1c;
-  overflow: hidden;
+  color: var(--link);
+  white-space: pre;
 }
 
-.barFill {
-  display: block;
-  height: 100%;
-  border-radius: 2px;
-  background: var(--link);
-  opacity: 0.85;
+.barRest {
+  color: var(--rule);
 }
 
 .occ {
-  width: 4rem;
   text-align: right;
-  font-size: 0.75rem;
   color: var(--text-dim);
-  font-variant-numeric: tabular-nums;
-}
-
-.go {
-  flex: none;
-  color: var(--link);
+  white-space: nowrap;
 }
 
 .form {
-  font-weight: 600;
-  font-size: 1rem;
+  font-weight: 700;
   color: var(--link);
 }
 
-.arrow {
+.arrow,
+.what {
   color: var(--text-dim);
 }
 
-.what {
-  flex: 1 1 auto;
-  font-size: 0.8rem;
-  color: var(--muted);
-}
-
 .panelFoot {
-  margin: 0;
-  padding: 0.75rem 1.1rem;
-  background: #ffffff08;
-  font-size: 0.8rem;
-  color: var(--muted);
+  margin-top: 1.5em;
+  color: var(--text-dim);
 }
 
 .loadmore {
-  display: block;
-  width: 100%;
-  padding: 0.85rem 1.1rem;
-  background: #ffffff0f;
-  border: none;
-  border-radius: 0;
-  font-size: 0.66rem;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--link);
-}
-
-.loadmore:hover {
-  background: #ffffff1c;
+  margin-top: 1.5em;
 }
 
 .empty {
-  margin: 0;
-  padding: 1.3rem 1.1rem;
-  border-bottom: 1px solid #ffffff14;
-  text-align: center;
   color: var(--muted);
 }
 
 .mark {
   background: none;
   color: var(--link);
-  font-weight: 600;
+  text-decoration: underline;
 }
 
 /* ---------------- detail ---------------- */
 
 .detail {
-  margin-top: 1.4rem;
+  margin-top: 1.5em;
 }
 
-.backlink {
-  align-self: flex-start;
-  padding: 0;
-  background: none;
-  border: none;
-  color: var(--link);
-  font-size: 0.85rem;
-}
-
-.backlink:hover {
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
-}
 
 .headword {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 0.4rem 1.1rem;
-  margin-top: 0.8rem;
+  column-gap: 2ch;
+  margin-top: 1.5em;
 }
 
 .hw {
   font-weight: 700;
-  font-size: clamp(2rem, 5vw, 2.8rem);
-  line-height: 1.1;
+}
+.hw::before {
+  content: "## ";
+  color: var(--text-dim);
+  font-weight: 400;
 }
 
 .ipa {
-  font-size: 1rem;
   color: var(--text-dim);
 }
 
 .tr {
-  font-size: 1.05rem;
   color: var(--muted);
 }
 
+/* One status line: auxiliaire être | rang 3 - 9 993 occ./M | vérifié */
 .chips {
   display: flex;
-  align-items: center;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.9rem;
 }
 
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4em;
-  font-size: 0.68rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text);
-  background: #ffffff12;
-  border: 1px solid #ffffff2e;
-  border-radius: 999px;
-  padding: 0.32em 0.8em;
+.chip + .chip::before {
+  content: " | ";
+  white-space: pre;
+  color: var(--rule);
 }
 
 .chipDim {
@@ -327,155 +208,101 @@
 
 .chipOk {
   color: var(--ok);
-  border-color: #7fdca44d;
-  background: #7fdca414;
 }
 
 .tabs {
   display: flex;
-  gap: 2px;
-  width: max-content;
-  margin: 1.3rem 0 1rem;
-  padding: 2px;
-  background: #ffffff0d;
-  border: 1px solid #ffffff1f;
-  border-radius: 8px;
+  gap: 2ch;
+  margin-top: 1.5em;
 }
 
-.tab {
-  background: none;
-  border: none;
-  border-radius: 6px;
-  padding: 0.45em 1em;
-  font-size: 0.68rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-}
-
-.tab:hover {
-  color: var(--text);
-}
-
-.tabOn {
-  background: #ffffff1f;
-  color: var(--text);
+.app .tabOn {
+  background: var(--text);
+  color: var(--sky);
 }
 
 /* The tab panel is a tab stop of its own, and root.css only rings form
    controls. */
 .cards:focus-visible {
-  outline: 2px solid var(--link);
-  outline-offset: 4px;
+  outline: 1px solid var(--text);
+  outline-offset: 1ch;
 }
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-  gap: 0.8rem;
-}
-
-.card {
-  background: #ffffff0d;
-  border: 1px solid #ffffff1f;
-  border-radius: 10px;
-  padding: 0.9rem 1rem 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(26ch, 1fr));
+  gap: 1.5em 2ch;
+  margin-top: 1.5em;
 }
 
 .mood {
-  font-size: 0.6rem;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
   color: var(--text-dim);
 }
 
 .tense {
   display: flex;
-  align-items: baseline;
   flex-wrap: wrap;
-  gap: 0.15rem 0.5rem;
-  margin-top: 0.15rem;
+  column-gap: 1ch;
 }
 
 .tenseName {
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .tenseEn {
-  font-size: 0.78rem;
   color: var(--muted);
 }
 
 .lit {
   font-style: italic;
-  opacity: 0.8;
 }
 
 .forms {
-  display: flex;
-  flex-direction: column;
-  margin-top: 0.6rem;
+  margin-top: 0.75em;
 }
 
 .f {
   display: grid;
-  grid-template-columns: 5.6rem 1fr;
-  gap: 0.6rem;
-  align-items: baseline;
-  padding: 0.12rem 0;
+  grid-template-columns: 11ch 1fr;
+  column-gap: 1ch;
 }
 
 .pr {
   text-align: right;
-  font-size: 0.78rem;
   color: var(--text-dim);
 }
 
 .fo {
-  font-weight: 600;
+  font-weight: 700;
   overflow-wrap: anywhere;
 }
 
+/* key: value lines, like a config file */
 .strip {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 1rem 2.4rem;
-  margin-top: 1.6rem;
-  padding-top: 1.2rem;
-  border-top: 1px solid #ffffff14;
-}
-
-.item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
+  margin-top: 1.5em;
 }
 
 .k {
-  font-size: 0.6rem;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
+  display: inline;
   color: var(--text-dim);
+}
+.k::after {
+  content: ": ";
+  white-space: pre;
 }
 
 .v {
-  font-weight: 600;
+  display: inline;
+  font-weight: 700;
 }
 
 .vItalic {
   font-style: italic;
 }
 
-.varForm {
-  font-weight: 300;
-  color: var(--text-dim);
-}
-
+.varForm,
 .en {
-  font-weight: 300;
-  font-size: 0.8rem;
+  font-weight: 400;
   color: var(--muted);
 }
 
@@ -484,44 +311,28 @@
 }
 
 .credit {
-  margin: 2rem auto 0;
-  max-width: 34rem;
-  text-align: center;
-  font-size: 0.75rem;
-  color: var(--muted);
-  opacity: 0.75;
-  line-height: 1.6;
+  margin-top: 3em;
+  color: var(--text-dim);
 }
 
 @media (max-width: 46rem) {
-  /* Narrow enough that the gloss gets a line of its own, under the lemma and
-     after the frequency bar, rather than being squeezed to an ellipsis. */
-  .row,
-  .rowForm {
-    flex-wrap: wrap;
-    gap: 0.15rem 0.9rem;
-  }
-
-  .lemmaWrap {
-    width: auto;
+  /* Too narrow for five columns: the bar goes, and the gloss gets a line of
+     its own under the lemma. */
+  .row {
+    grid-template-columns: 4ch 1fr 7ch;
+    contain-intrinsic-size: auto 3em;
   }
 
   .bar {
-    width: 3.5rem;
+    display: none;
   }
 
   .gloss {
-    order: 1;
-    flex-basis: 100%;
-    /* Aligned under the lemma: the rank column plus the row gap. */
-    padding-left: 3.1rem;
+    grid-column: 2 / -1;
+    grid-row: 2;
   }
 
-  .row {
-    contain-intrinsic-size: auto 4rem;
-  }
-
-  .f {
-    grid-template-columns: 4.6rem 1fr;
+  .rowForm {
+    padding-left: 0;
   }
 }

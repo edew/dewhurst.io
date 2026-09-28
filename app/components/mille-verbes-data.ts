@@ -52,7 +52,7 @@ export function bare(s: string): string {
 // Formatted by hand rather than with toLocaleString, so that the server and
 // the browser agree on the separators and hydration stays quiet.
 function group(n: string): string {
-  return n.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  return n.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
 export function fmtFreq(x: number): string {
@@ -414,7 +414,7 @@ export interface TenseRow {
 export function tenseRows(cells: Cell[], mood: string): TenseRow[] {
   if (mood === "imperatif") {
     return cells.map((cell, i) => ({
-      form: (cell.c ?? []).map(bare).join(" · "),
+      form: (cell.c ?? []).map(bare).join(" / "),
       pr: IMP_LABELS[i] ?? "",
     }));
   }
@@ -445,7 +445,7 @@ export function tenseRows(cells: Cell[], mood: string): TenseRow[] {
       gcells = all;
     }
 
-    const uniq = [...new Set(gcells.map((c) => variantsOf(c).join(" · ")))];
+    const uniq = [...new Set(gcells.map((c) => variantsOf(c).join(" / ")))];
 
     if (uniq.length === 1) {
       rows.push({ form: uniq[0], pr: labels[key] ?? "" });
@@ -466,7 +466,7 @@ export function tenseRows(cells: Cell[], mood: string): TenseRow[] {
         const parts = mv.map((m, i) => mergeGender(m, fv[i]));
 
         if (parts.every(Boolean)) {
-          merged = parts.join(" · ");
+          merged = parts.join(" / ");
         }
       }
     }
@@ -483,7 +483,7 @@ export function tenseRows(cells: Cell[], mood: string): TenseRow[] {
           ? (l.split(", ").find((x) => /elle/.test(x)) ?? l)
           : (l.split(", ").find((x) => !/elle/.test(x)) ?? l);
 
-      rows.push({ form: variantsOf(cell).join(" · "), pr: single });
+      rows.push({ form: variantsOf(cell).join(" / "), pr: single });
     }
   }
 
@@ -521,8 +521,8 @@ export const COMPOUND_CARDS: [string, string, string, string][] = [
 ];
 
 export const VERDICT_CHIP: Record<string, ["dim" | "ok", string]> = {
-  clean: ["ok", "vérifié · Oxford-Hachette"],
-  "hand-corrected": ["ok", "vérifié · corrigé à la main"],
+  clean: ["ok", "vérifié - Oxford-Hachette"],
+  "hand-corrected": ["ok", "vérifié - corrigé à la main"],
   "attested-with-orphans": ["dim", "vérifié en partie"],
   failed: ["dim", "non vérifié"],
   "not-in-dictionary": ["dim", "hors dictionnaire"],

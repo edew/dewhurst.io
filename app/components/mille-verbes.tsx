@@ -56,57 +56,20 @@ function Hi({ needle, text }: { needle: string; text: string }) {
   );
 }
 
-function SearchIcon() {
-  return (
-    <svg
-      className={styles.searchIcon}
-      viewBox="0 0 16 16"
-      width="16"
-      height="16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      aria-hidden="true"
-    >
-      <circle cx="7" cy="7" r="4.5" />
-      <line x1="10.5" y1="10.5" x2="14" y2="14" />
-    </svg>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <svg
-      viewBox="0 0 12 12"
-      width="12"
-      height="12"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <polyline points="2,6.5 5,9.5 10,3" />
-    </svg>
-  );
-}
-
 function FreqBar({ max, verb }: { max: number; verb: Verb }) {
   // Square root, so that "être" at 32 000 per million does not flatten every
   // other bar to nothing.
-  const pct = Math.max(1.5, 100 * Math.sqrt(verb.freq / max));
+  // Drawn in characters, ten cells wide, like a progress bar in a terminal.
+  const filled = Math.max(1, Math.round(10 * Math.sqrt(verb.freq / max)));
 
   return (
-    <span className={styles.freq}>
-      <span className={styles.bar}>
-        <span
-          className={styles.barFill}
-          style={{ width: `${pct.toFixed(1)}%` }}
-        />
+    <>
+      <span className={styles.bar} aria-hidden="true">
+        {"#".repeat(filled)}
+        <span className={styles.barRest}>{".".repeat(10 - filled)}</span>
       </span>
       <span className={styles.occ}>{fmtFreq(verb.freq)}</span>
-    </span>
+    </>
   );
 }
 
@@ -146,7 +109,6 @@ function VerbRow({
         <Hi text={gloss} needle={where === "lemma" ? "" : query} />
       </span>
       <FreqBar max={max} verb={verb} />
-      <span className={styles.go}>›</span>
     </button>
   );
 }
@@ -242,7 +204,7 @@ function Detail({ onBack, verb }: { onBack: () => void; verb: Verb }) {
     ),
   ];
   const pp = ppAll[0] ?? "";
-  const ppVars = ppAll.slice(1).join(" · ");
+  const ppVars = ppAll.slice(1).join(" / ");
   const pcRows = tenseRows(
     verb.moods?.indicatif?.["passé-composé"] ?? [],
     "indicatif",
@@ -251,8 +213,8 @@ function Detail({ onBack, verb }: { onBack: () => void; verb: Verb }) {
 
   return (
     <div className={styles.detail}>
-      <button type="button" className={styles.backlink} onClick={onBack}>
-        ← retour à la liste
+      <button type="button" onClick={onBack}>
+        &lt;- retour à la liste
       </button>
 
       <div className={styles.headword}>
@@ -270,7 +232,7 @@ function Detail({ onBack, verb }: { onBack: () => void; verb: Verb }) {
           auxiliaire <b>{verb.aux ?? "avoir"}</b>
         </span>
         <span className={`${styles.chip} ${styles.chipDim}`}>
-          rang {verb.rank} · {fmtFreq(verb.freq)} occ./M
+          rang {verb.rank} - {fmtFreq(verb.freq)} occ./M
         </span>
         <span
           className={
@@ -279,7 +241,6 @@ function Detail({ onBack, verb }: { onBack: () => void; verb: Verb }) {
               : `${styles.chip} ${styles.chipDim}`
           }
         >
-          {verdictKind === "ok" ? <CheckIcon /> : null}
           {verdictText}
         </span>
       </div>
@@ -300,9 +261,7 @@ function Detail({ onBack, verb }: { onBack: () => void; verb: Verb }) {
           ref={(el) => {
             tabRefs.current.simple = el;
           }}
-          className={
-            tab === "simple" ? `${styles.tab} ${styles.tabOn}` : styles.tab
-          }
+          className={tab === "simple" ? styles.tabOn : undefined}
           onClick={() => setTab("simple")}
         >
           Temps simples
@@ -317,9 +276,7 @@ function Detail({ onBack, verb }: { onBack: () => void; verb: Verb }) {
           ref={(el) => {
             tabRefs.current.compose = el;
           }}
-          className={
-            tab === "compose" ? `${styles.tab} ${styles.tabOn}` : styles.tab
-          }
+          className={tab === "compose" ? styles.tabOn : undefined}
           onClick={() => setTab("compose")}
         >
           Temps composés
@@ -374,7 +331,7 @@ function Detail({ onBack, verb }: { onBack: () => void; verb: Verb }) {
             <div className={styles.v}>
               {pp}{" "}
               {ppVars ? (
-                <span className={styles.varForm}>· {ppVars}</span>
+                <span className={styles.varForm}>/ {ppVars}</span>
               ) : null}{" "}
               {e ? (
                 <span className={styles.en} lang="en">
@@ -594,7 +551,6 @@ export default function MilleVerbes() {
   return (
     <div className={styles.app} lang="fr" ref={rootRef}>
       <div className={styles.search}>
-        <SearchIcon />
         <input
           type="text"
           lang="fr"
@@ -608,7 +564,6 @@ export default function MilleVerbes() {
           onFocus={loadFull}
           onKeyDown={onKeyDown}
         />
-        <span className={styles.kbd}>/</span>
       </div>
 
       {/* Always in the tree, and hidden by CSS while empty, so that a screen
@@ -651,15 +606,14 @@ export default function MilleVerbes() {
               onClick={() => open(h.lemma)}
             >
               <span className={styles.form}>{h.form}</span>
-              <span className={styles.arrow}>→</span>
+              <span className={styles.arrow}>-&gt;</span>
               <span className={styles.lemma}>{h.lemma}</span>
               <span className={styles.what}>forme conjuguée</span>
-              <span className={styles.go}>›</span>
             </button>
           ))}
           <p className={styles.panelFoot}>
             Les formes conjuguées marchent aussi - "fussent" vous mène à être
-            &nbsp;·&nbsp; ↑↓ naviguer, ↵ ouvrir, esc effacer
+            - haut/bas naviguer, entrée ouvrir, esc effacer
           </p>
         </section>
       ) : (
@@ -686,7 +640,7 @@ export default function MilleVerbes() {
                 className={styles.loadmore}
                 onClick={loadFull}
               >
-                Afficher les 990 autres verbes ↓
+                Afficher les 990 autres verbes
               </button>
             )}
           </div>

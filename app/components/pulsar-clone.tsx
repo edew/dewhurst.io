@@ -3,45 +3,18 @@ import { useEffect, useRef, useState } from "react";
 import { execute } from "./pulsar-parser";
 import styles from "./pulsar-clone.module.css";
 
-function hsvToRgb(hue: number, sat: number, val: number) {
-  const h = hue / 360;
-  const s = sat / 100;
-  const v = val / 100;
-  const i = Math.floor(h * 6);
-  const f = h * 6 - i;
-  const p = v * (1 - s);
-  const q = v * (1 - f * s);
-  const t = v * (1 - (1 - f) * s);
-  let r = 0;
-  let g = 0;
-  let b = 0;
+const SIZE = 32;
 
-  switch (i % 6) {
-    case 0:
-      ((r = v), (g = t), (b = p));
-      break;
-    case 1:
-      ((r = q), (g = v), (b = p));
-      break;
-    case 2:
-      ((r = p), (g = v), (b = t));
-      break;
-    case 3:
-      ((r = p), (g = q), (b = v));
-      break;
-    case 4:
-      ((r = t), (g = p), (b = v));
-      break;
-    case 5:
-      ((r = v), (g = p), (b = q));
-      break;
-  }
+// Each cell's value, from 0 to 1, is drawn as a character with more ink the
+// higher it is. A cell is two characters wide, so that at the grid's line
+// height it comes out roughly square.
+const RAMP = " .:-=+*#%@";
 
-  return {
-    r: r * 255,
-    g: g * 255,
-    b: b * 255,
-  };
+function cell(value: number) {
+  const v = Number.isFinite(value) ? Math.min(Math.max(value, 0), 1) : 0;
+  const glyph = RAMP[Math.round(v * (RAMP.length - 1))];
+
+  return glyph + glyph;
 }
 
 const EXAMPLES = [
@@ -98,7 +71,7 @@ const EXAMPLES = [
 ];
 
 export default function PulsarClone() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const screenRef = useRef<HTMLPreElement>(null);
   const [expression, setExpression] = useState(
     EXAMPLES[0].patterns[0].expression,
   );
@@ -110,34 +83,7 @@ export default function PulsarClone() {
   );
 
   useEffect(() => {
-    const canvas = canvasRef.current!;
-    const ctx = canvas.getContext("2d")!;
-
-    const rectCount = 32;
-    let width = 0;
-    let height = 0;
-    let rectWidth = 0;
-    let rectHeight = 0;
-
-    // CSS sets the canvas's size on the page; its pixel buffer follows it so
-    // the grid stays sharp at any width and pixel density.
-    function resize() {
-      const dpr = window.devicePixelRatio || 1;
-
-      width = canvas.clientWidth;
-      height = canvas.clientHeight;
-      rectWidth = width / rectCount;
-      rectHeight = height / rectCount;
-
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-
-    resize();
-    const observer = new ResizeObserver(resize);
-    observer.observe(canvas);
+    const screen = screenRef.current!;
 
     function f(x: number, y: number, t: number) {
       try {
@@ -147,29 +93,20 @@ export default function PulsarClone() {
       }
     }
 
-    function color(x: number) {
-      // Multiplyig by 360 here would give color values that "loop" back around to red
-      // Multiplyig by 300 instead limits the final color or purple
-      const h = (x / width) * 360;
-      return hsvToRgb(h, 100, 100);
-    }
-
     function draw(t: number) {
-      ctx.clearRect(0, 0, width, height);
+      const lines = [];
 
-      for (let i = 0; i < rectCount; i++) {
-        for (let j = 0; j < rectCount; j++) {
-          const x0 = Math.round(i * rectWidth);
-          const x1 = Math.round((i + 1) * rectWidth);
-          const y0 = Math.round(j * rectHeight);
-          const y1 = Math.round((j + 1) * rectHeight);
+      for (let y = 0; y < SIZE; y++) {
+        let line = "";
 
-          const value = f(i, j, t);
-          const rgb = color(x0);
-          ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${value})`;
-          ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
+        for (let x = 0; x < SIZE; x++) {
+          line += cell(f(x, y, t));
         }
+
+        lines.push(line);
       }
+
+      screen.textContent = lines.join("\n");
     }
 
     let previousTimestamp = 0;
@@ -186,23 +123,22 @@ export default function PulsarClone() {
 
     let frame = requestAnimationFrame(callback);
 
-    return () => {
-      cancelAnimationFrame(frame);
-      observer.disconnect();
-    };
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   return (
     <div className={styles.app}>
-      <canvas ref={canvasRef} />
+      <pre className={styles.screen} ref={screenRef} aria-hidden="true" />
       <textarea
         name="expression"
+        aria-label="Expression"
         placeholder="cos(x - y * (t * 5.8))"
         value={expression}
         onChange={(event) => setExpression(event.target.value)}
       />
       <select
         name="example"
+        aria-label="Pattern"
         value={isExample ? expression : ""}
         onChange={(event) => setExpression(event.target.value)}
       >
