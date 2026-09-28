@@ -113,23 +113,31 @@ export default function PulsarClone() {
     const canvas = canvasRef.current!;
     const ctx = canvas.getContext("2d")!;
 
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-    const dpr = window.devicePixelRatio || 1;
-
-    canvas.style.width = `${width}px`;
-    canvas.style.height = `${height}px`;
-
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
-
-    ctx.scale(dpr, dpr);
-
     const rectCount = 32;
-    const rectWidth = width / rectCount;
-    const rectHeight = height / rectCount;
+    let width = 0;
+    let height = 0;
+    let rectWidth = 0;
+    let rectHeight = 0;
 
-    ctx.textBaseline = "middle";
+    // CSS sets the canvas's size on the page; its pixel buffer follows it so
+    // the grid stays sharp at any width and pixel density.
+    function resize() {
+      const dpr = window.devicePixelRatio || 1;
+
+      width = canvas.clientWidth;
+      height = canvas.clientHeight;
+      rectWidth = width / rectCount;
+      rectHeight = height / rectCount;
+
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    resize();
+    const observer = new ResizeObserver(resize);
+    observer.observe(canvas);
 
     function f(x: number, y: number, t: number) {
       try {
@@ -178,12 +186,15 @@ export default function PulsarClone() {
 
     let frame = requestAnimationFrame(callback);
 
-    return () => cancelAnimationFrame(frame);
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
   }, []);
 
   return (
     <div className={styles.app}>
-      <canvas width={400} height={400} ref={canvasRef} />
+      <canvas ref={canvasRef} />
       <textarea
         name="expression"
         placeholder="cos(x - y * (t * 5.8))"

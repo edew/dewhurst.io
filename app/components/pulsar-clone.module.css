@@ -6,8 +6,8 @@
 }
 
 .app canvas {
-  width: 400px;
-  height: 400px;
+  width: 100%;
+  aspect-ratio: 1;
 }
 
 .app input,
