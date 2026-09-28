@@ -101,7 +101,7 @@ export default function FrenchDrill() {
     correct: "Correct!",
     none: "",
     revealed: feedback.kind === "revealed" ? feedback.answer : "",
-    wrong: "Not quite — try again.",
+    wrong: "Not quite - try again.",
   }[feedback.kind];
 
   return (
@@ -110,7 +110,7 @@ export default function FrenchDrill() {
         {finished ? `${deck.length} / ${deck.length}` : `${index + 1} / ${deck.length}`}
       </p>
       <p className={styles.prompt} lang="en">
-        {finished ? "Bravo — you have finished the deck." : card.en}
+        {finished ? "Bravo - you have finished the deck." : card.en}
       </p>
       <form onSubmit={onSubmit} hidden={finished}>
         <input

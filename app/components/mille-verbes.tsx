@@ -125,7 +125,7 @@ function VerbRow({
   verb: Verb;
   where: "" | "gloss" | "lemma";
 }) {
-  const gloss = (verb.glosses ?? []).join(", ") || "—";
+  const gloss = (verb.glosses ?? []).join(", ") || "-";
 
   return (
     <button
@@ -462,7 +462,7 @@ export default function MilleVerbes() {
     }
 
     loadingRef.current = true;
-    setNotice("Chargement des mille verbes…");
+    setNotice("Chargement des mille verbes...");
 
     fetch(VERBS_URL)
       .then((r) => {
@@ -600,7 +600,7 @@ export default function MilleVerbes() {
           lang="fr"
           autoComplete="off"
           spellCheck={false}
-          placeholder="Cherchez un verbe — français, anglais, ou forme conjuguée…"
+          placeholder="Cherchez un verbe - français, anglais, ou forme conjuguée..."
           aria-label="Cherchez un verbe"
           ref={inputRef}
           value={query}
@@ -621,11 +621,11 @@ export default function MilleVerbes() {
         <Detail verb={detailVerb} onBack={back} key={detailVerb.lemma} />
       ) : trimmed ? (
         <section className={styles.panel}>
-          <div className={styles.panelHead}>Résultats · « {trimmed} »</div>
+          <div className={styles.panelHead}>Résultats : "{trimmed}"</div>
           {!results.verbs.length && !results.forms.length ? (
             <p className={styles.empty}>
               Aucun verbe trouvé
-              {full ? "" : " parmi les dix premiers — chargement du reste…"}
+              {full ? "" : " parmi les dix premiers - chargement du reste..."}
             </p>
           ) : null}
           {results.verbs.map((s, i) => (
@@ -658,7 +658,7 @@ export default function MilleVerbes() {
             </button>
           ))}
           <p className={styles.panelFoot}>
-            Les formes conjuguées marchent aussi — « fussent » vous mène à être
+            Les formes conjuguées marchent aussi - "fussent" vous mène à être
             &nbsp;·&nbsp; ↑↓ naviguer, ↵ ouvrir, esc effacer
           </p>
         </section>
@@ -678,7 +678,7 @@ export default function MilleVerbes() {
             ))}
             {full ? (
               <p className={styles.panelFoot}>
-                Mille verbes chargés — cherchez, ou parcourez la liste.
+                Mille verbes chargés - cherchez, ou parcourez la liste.
               </p>
             ) : (
               <button
@@ -698,7 +698,7 @@ export default function MilleVerbes() {
         <a href="https://github.com/bretttolbert/verbecc">
           verbecc
         </a>{" "}
-        · Fréquences:{" "}
+        - Fréquences:{" "}
         <a href="http://www.lexique.org">
           Lexique 3.83
         </a>
