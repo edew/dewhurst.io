@@ -23,7 +23,7 @@ const { Content } = await render(post);
 ---
 
 <Document
-  canonical={`https://www.dewhurst.io${postPath(post)}`}
+  canonical={postPath(post)}
   description={post.data.description}
   title={`${post.data.title} | For Me`}
 >

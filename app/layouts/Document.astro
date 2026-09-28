@@ -2,6 +2,7 @@
 import "../root.css";
 
 interface Props {
+  // The page's path, e.g. "/2025/06/30/git-wip", resolved against the site URL
   canonical?: string;
   description: string;
   robots?: string;
@@ -25,7 +26,8 @@ const speculationRules = JSON.stringify({
     <title>{title}</title>
     <meta name="description" content={description} />
     {robots && <meta name="robots" content={robots} />}
-    {canonical && <link rel="canonical" href={canonical} />}
+    {canonical && <link rel="canonical" href={new URL(canonical, Astro.site)} />}
+    <link rel="alternate" type="application/rss+xml" title="For Me" href="/feed.xml" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
