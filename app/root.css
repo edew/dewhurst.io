@@ -1,38 +1,41 @@
+/* A text file under the night sky: one monospace face at one size on one
+   character grid, with the markup left showing. Emphasis comes from
+   brightness, never size. */
 :root {
-  color-scheme: dark;
-  --sky-0: #070a18;
-  --sky-1: #0a0e22;
-  --sky-2: #0e1430;
-  --sky-3: #172041;
-  --sky-4: #263259;
-  --sky-5: #2d3a64;
-  --sky-6: #344471;
-  --sky-7: #3a4b70;
+  color-scheme: dark light;
+  --sky: #070a18;
   --text: #f3efe2;
-  --text-dim: #b0bfe6;
+  --text-dim: #8e9aba;
+  --star: #dfe8ff;
+  --rule: #3a4b70;
   --link: #a9c1f5;
   --ok: #7fdca4;
   --bad: #ffb1b1;
   --muted: #bcc6da;
 
-  --font-round:
-    ui-rounded, "Arial Rounded MT Bold", "Hiragino Maru Gothic ProN", system-ui,
-    sans-serif;
-  /* Long-form reading: the rounded face is kept for titles and labels */
-  --font-text: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-mono: ui-monospace, Menlo, Consolas, monospace;
+  --font-mono:
+    ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 }
 
-/* Pages cross-fade into each other when navigating within the site */
-@media (prefers-reduced-motion: no-preference) {
-  @view-transition {
-    navigation: auto;
+/* By day: ink on paper, with the stars drawn in ink too */
+@media (prefers-color-scheme: light) {
+  :root {
+    --sky: #f4f1e8;
+    --text: #1b2340;
+    --text-dim: #5b6685;
+    --star: #2d3a64;
+    --rule: #b9bfd0;
+    --link: #2a4fa8;
+    --ok: #1d7a47;
+    --bad: #b42318;
+    --muted: #3d4766;
   }
 }
 
 * {
   margin: 0;
   box-sizing: border-box;
+  border-radius: 0;
 }
 
 html {
@@ -41,82 +44,85 @@ html {
 }
 
 body {
-  background: linear-gradient(
-    var(--sky-0) 0,
-    var(--sky-1) 340px,
-    var(--sky-2) 760px,
-    var(--sky-3) 1200px,
-    var(--sky-4) max(45%, 1500px),
-    var(--sky-5) max(68%, 1800px),
-    var(--sky-6) max(86%, 2100px),
-    var(--sky-7) 100%
-  );
-  background-repeat: no-repeat;
-  background-color: var(--sky-7);
-  font-family: var(--font-round);
-  font-weight: 400;
+  background: var(--sky);
   color: var(--text);
-  /* Light text on a dark ground renders too heavy with subpixel smoothing */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  font: 1rem / 1.5 var(--font-mono);
   min-height: 100vh;
-  position: relative;
+}
+
+/* Light text on a dark ground renders too heavy with subpixel smoothing */
+@media (prefers-color-scheme: dark) {
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
 main {
-  position: relative;
-  z-index: 2;
-  padding-bottom: 16vh;
+  max-width: calc(80ch + 2rem);
+  margin: 0 auto;
+  padding: 1.5rem 1rem 6rem;
 }
 
-a {
-  color: var(--link);
-  text-decoration: none;
-}
-a:hover,
-a:focus-visible {
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
+/* Every block is separated by exactly one blank line of the grid */
+main :is(h1, h2, h3, h4, p, ul, ol, pre, blockquote, table, header, footer) {
+  margin-block: 1.5em;
 }
 
 h1,
 h2,
 h3,
 h4 {
-  line-height: 1.2;
-  text-wrap: balance;
+  font-size: 1em;
+  font-weight: 700;
+}
+article h1::before {
+  content: "# ";
+  color: var(--text-dim);
+}
+h2::before {
+  content: "## ";
+  color: var(--text-dim);
+}
+h3::before {
+  content: "### ";
+  color: var(--text-dim);
 }
 
-time {
-  display: block;
-  font-size: 0.8rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+a {
+  color: var(--link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+ul,
+ol {
+  padding-left: 2ch;
+}
+ul {
+  list-style: "- ";
+}
+li::marker {
   color: var(--text-dim);
 }
 
 code {
-  font-family: var(--font-mono);
-  font-size: 0.82em;
-  background: #ffffff1c;
-  padding: 0.12em 0.4em;
-  border-radius: 6px;
+  font: inherit;
+}
+:not(pre) > code::before,
+:not(pre) > code::after {
+  content: "`";
+  color: var(--text-dim);
 }
 
+/* Long lines of code wrap rather than scroll */
 pre {
-  background: #ffffff12;
-  padding: 1rem 1.2rem;
-  border-radius: 10px;
-  overflow-x: auto;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
   tab-size: 4;
-}
-pre code {
-  background: none;
-  padding: 0;
-  font-size: 0.875rem;
-  line-height: 1.6;
+  padding-left: 2ch;
+  border-left: 1px solid var(--rule);
 }
 
 input,
@@ -125,168 +131,114 @@ select,
 button {
   font: inherit;
   color: inherit;
-  background: #ffffff1c;
-  border: 1px solid #ffffff2e;
-  border-radius: 6px;
-  padding: 0.5em 0.7em;
+  background: none;
+  border: 1px solid var(--rule);
+  padding: 0.25em 1ch;
 }
 input::placeholder,
 textarea::placeholder {
   color: var(--text-dim);
   opacity: 1;
 }
-input:disabled,
-textarea:disabled,
-select:disabled,
-button:disabled {
+:is(input, textarea, select, button):disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible,
-button:focus-visible {
-  outline: 2px solid var(--link);
-  outline-offset: 1px;
+:is(input, textarea, select, button, a):focus-visible {
+  outline: 1px solid var(--text);
+  outline-offset: 2px;
 }
 button,
 input[type="submit"],
 input[type="button"],
-input[type="reset"] {
-  cursor: pointer;
-}
+input[type="reset"],
 select {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23b0bfe6' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.7em center;
-  padding-right: 2.2em;
   cursor: pointer;
 }
+:is(button, input[type="submit"], input[type="button"]):hover {
+  background: var(--text);
+  color: var(--sky);
+}
 
-.hero {
-  min-height: 20vh;
+time {
+  color: var(--text-dim);
+}
+
+/* The sky: stars are characters on the text grid, twinkling in place, as
+   wide as the text below them. The title sits in the middle row, clearing
+   the stars behind it. */
+.sky {
   position: relative;
+  max-width: calc(80ch + 2rem);
+  margin: 0 auto;
+  padding: 1.5rem 1rem 0;
 }
-/* Read out by screen readers, but the home page shows only the night sky. */
-.visually-hidden {
+.sky-title {
   position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
+  inset: 1.5rem 1rem 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  font-size: 1em;
+  font-weight: 700;
+  pointer-events: none;
 }
-
+.sky-title > * {
+  padding: 0 2ch;
+  background: var(--sky);
+  color: var(--text);
+  text-decoration: none;
+  pointer-events: auto;
+}
 #stars {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(#000 70%, transparent);
-  mask-image: linear-gradient(#000 70%, transparent);
+  white-space: pre;
+  -webkit-user-select: none;
+  user-select: none;
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: var(--star);
 }
+/* Each star rests dim, then flashes bright and fades: a wink, not a swell */
 #stars i {
-  position: absolute;
-  display: block;
-  border-radius: 50%;
-  background: #dfe8ff;
-  box-shadow: 0 0 6px 1px rgba(205, 220, 255, 0.35);
-  opacity: 0.05;
+  font-style: normal;
+  opacity: 0.2;
   animation: wink var(--wink, 4s) ease-in-out infinite;
 }
 @keyframes wink {
   0%,
+  35%,
+  65%,
   100% {
-    opacity: 0.05;
-    transform: scale(0.6);
+    opacity: 0.2;
   }
   50% {
     opacity: var(--peak, 1);
-    transform: scale(1);
   }
 }
 
+/* The home page is a directory listing: date, name, then what it is */
 .posts {
   list-style: none;
-  margin: 0;
   padding: 0;
 }
-.post {
-  max-width: 34rem;
-  margin: 5vh auto;
-  padding: 0 1.5rem;
-  position: relative;
-  text-align: center;
+.posts li {
+  display: grid;
+  grid-template-columns: 12ch 1fr;
 }
-.post h2 {
-  font-weight: 600;
-  font-size: 1.65rem;
-  margin: 0.4rem 0 0.7rem;
+main .posts p {
+  grid-column: 2;
+  margin: 0 0 1.5em;
+  color: var(--muted);
 }
-.post h2 a {
-  color: inherit;
-}
-.post p {
-  color: var(--text-dim);
-  line-height: 1.5;
-  text-wrap: pretty;
-}
-.site-header {
-  position: relative;
-  z-index: 2;
-  padding: 1.2rem 1.5rem;
-}
-.site-header a {
-  color: var(--text);
-  font-weight: 700;
-  font-size: 0.85rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-}
-
-.error-page {
-  max-width: 40rem;
-  margin: 0 auto;
-  padding: 4rem 1.5rem;
-}
-
-article {
-  max-width: 40rem;
-  margin: 0 auto;
-  padding: 1rem 1.5rem 0;
-  line-height: 1.7;
-}
-article > header {
-  margin-bottom: 2.2rem;
-  text-align: center;
-}
-article > header h1 {
-  font-weight: 700;
-  font-size: clamp(1.9rem, 5vw, 2.6rem);
-  margin-top: 0.5rem;
-}
-article :is(p, ul, ol, pre, blockquote, table, h2, h3, h4) {
-  margin-block: 1rem;
-}
-article :is(h2, h3, h4) {
-  margin-top: 2rem;
-}
-/* Prose written in the post itself, as opposed to an interactive component */
-article section > :is(p, ul, ol, blockquote) {
-  font-family: var(--font-text);
-  font-size: 1.125rem;
-  line-height: 1.65;
-  text-wrap: pretty;
-  hanging-punctuation: first;
-}
-article section > :is(p, ul, ol, blockquote) a {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
-}
-article section > :is(ul, ol) > li + li {
-  margin-top: 0.25rem;
+@media (min-width: 60rem) {
+  .posts li {
+    grid-template-columns: 12ch 20ch 1fr;
+  }
+  main .posts p {
+    grid-column: 3;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

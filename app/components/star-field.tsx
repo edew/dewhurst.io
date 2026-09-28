@@ -1,7 +1,9 @@
-const STAR_COUNT = 110;
+const COLUMNS = 160;
 const SEED = 1337;
+const DENSITY = 0.12;
+const GLYPHS = [".", ".", ".", ".", "'", "*", "+"];
 
-// A fixed seed keeps the prerendered HTML and the hydrated output identical.
+// A fixed seed keeps the prerendered HTML the same on every build.
 function mulberry32(seed: number) {
   let a = seed;
   return () => {
@@ -12,33 +14,41 @@ function mulberry32(seed: number) {
   };
 }
 
-const stars = (() => {
+// The sky is drawn in characters on the same grid as the text: each cell is
+// either a space or a star. Lines are wider than any screen and cut off by the
+// container, so the sky fills the width without wrapping.
+function sky(rows: number) {
   const random = mulberry32(SEED);
-  return Array.from({ length: STAR_COUNT }, () => {
-    const left = (random() * 100).toFixed(2);
-    const top = (random() * 100).toFixed(2);
-    const size = (1.2 + random() * 3).toFixed(1);
-    const wink = (2.5 + random() * 4.5).toFixed(2);
-    const delay = (-random() * 7).toFixed(2);
-    const peak = (0.5 + random() * 0.5).toFixed(2);
-    return {
-      left: `${left}%`,
-      top: `${top}%`,
-      width: `${size}px`,
-      height: `${size}px`,
-      "--wink": `${wink}s`,
-      "--peak": peak,
-      animationDelay: `${delay}s`,
-    } as React.CSSProperties;
-  });
-})();
 
-export function StarField() {
+  return Array.from({ length: rows }, (_, row) => {
+    const line: React.ReactNode[] = [];
+    let gap = "";
+
+    for (let column = 0; column < COLUMNS; column++) {
+      if (random() >= DENSITY) {
+        gap += " ";
+        continue;
+      }
+
+      const glyph = GLYPHS[Math.floor(random() * GLYPHS.length)];
+      const style = {
+        "--wink": `${(2.5 + random() * 4.5).toFixed(2)}s`,
+        "--peak": (0.85 + random() * 0.15).toFixed(2),
+        animationDelay: `${(-random() * 7).toFixed(2)}s`,
+      } as React.CSSProperties;
+
+      line.push(gap, <i key={column} style={style}>{glyph}</i>);
+      gap = "";
+    }
+
+    return <div key={row}>{line}{gap}</div>;
+  });
+}
+
+export function StarField({ rows }: { rows: number }) {
   return (
-    <div id="stars" aria-hidden="true">
-      {stars.map((star, i) => (
-        <i key={i} style={star} />
-      ))}
-    </div>
+    <pre id="stars" aria-hidden="true">
+      {sky(rows)}
+    </pre>
   );
 }

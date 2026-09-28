@@ -1,29 +1,23 @@
 ---
 import { StarField } from "../components/star-field";
 import Document from "../layouts/Document.astro";
-import { formatDate, getPosts, isoDate, postPath } from "../posts";
+import { getPosts, isoDate, postPath } from "../posts";
 
 const posts = await getPosts();
 ---
 
-<Document
-  canonical="/"
-  description="A blog for me"
-  title="For Me"
->
+<Document canonical="/" description="A blog for me" title="For Me">
+  <header class="sky">
+    <StarField rows={5} />
+    <h1 class="sky-title"><span>For Me</span></h1>
+  </header>
   <main>
-    <header class="hero">
-      <StarField />
-      <h1 class="visually-hidden">For Me</h1>
-    </header>
     <ol class="posts">
       {
         posts.map((post) => (
-          <li class="post">
-            <time datetime={isoDate(post)}>{formatDate(post)}</time>
-            <h2>
-              <a href={postPath(post)}>{post.data.title}</a>
-            </h2>
+          <li>
+            <time datetime={isoDate(post)}>{isoDate(post)}</time>
+            <a href={postPath(post)}>{post.id}</a>
             <p>{post.data.description}</p>
           </li>
         ))

@@ -23,12 +23,3 @@ export function postPath(post: Post) {
 export function isoDate(post: Post) {
   return post.data.date.toISOString().slice(0, 10);
 }
-
-export function formatDate(post: Post) {
-  return post.data.date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    timeZone: "UTC",
-  });
-}

@@ -1,15 +1,9 @@
 ---
 import { render } from "astro:content";
 
+import { StarField } from "../../../../components/star-field";
 import Document from "../../../../layouts/Document.astro";
-import {
-  formatDate,
-  getPosts,
-  isoDate,
-  postParams,
-  postPath,
-  type Post,
-} from "../../../../posts";
+import { getPosts, postParams, postPath, type Post } from "../../../../posts";
 
 export async function getStaticPaths() {
   return (await getPosts()).map((post) => ({
@@ -27,18 +21,14 @@ const { Content } = await render(post);
   description={post.data.description}
   title={`${post.data.title} | For Me`}
 >
-  <header class="site-header" role="banner">
-    <a href="/">For Me</a>
+  <header class="sky">
+    <StarField rows={5} />
+    <p class="sky-title"><a href="/">For Me</a></p>
   </header>
   <main>
     <article>
-      <header>
-        <time datetime={isoDate(post)}>{formatDate(post)}</time>
-        <h1>{post.data.title}</h1>
-      </header>
-      <section>
-        <Content />
-      </section>
+      <h1>{post.data.title}</h1>
+      <Content />
     </article>
   </main>
 </Document>
