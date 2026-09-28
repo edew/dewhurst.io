@@ -24,6 +24,7 @@ const posts = await getPosts();
             <h2>
               <a href={postPath(post)}>{post.data.title}</a>
             </h2>
+            <p>{post.data.description}</p>
           </li>
         ))
       }

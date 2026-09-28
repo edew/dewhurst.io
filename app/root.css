@@ -18,6 +18,9 @@
   --font-round:
     ui-rounded, "Arial Rounded MT Bold", "Hiragino Maru Gothic ProN", system-ui,
     sans-serif;
+  /* Long-form reading: the rounded face is kept for titles and labels */
+  --font-text: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, Menlo, Consolas, monospace;
 }
 
 /* Pages cross-fade into each other when navigating within the site */
@@ -30,6 +33,11 @@
 * {
   margin: 0;
   box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -48,6 +56,9 @@ body {
   font-family: var(--font-round);
   font-weight: 400;
   color: var(--text);
+  /* Light text on a dark ground renders too heavy with subpixel smoothing */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   min-height: 100vh;
   position: relative;
@@ -69,16 +80,24 @@ a:focus-visible {
   text-underline-offset: 0.2em;
 }
 
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
 time {
   display: block;
-  font-size: 0.72rem;
-  letter-spacing: 0.28em;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--text-dim);
 }
 
 code {
-  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-family: var(--font-mono);
   font-size: 0.82em;
   background: #ffffff1c;
   padding: 0.12em 0.4em;
@@ -91,11 +110,13 @@ pre {
   border-radius: 10px;
   overflow-x: auto;
   white-space: pre-wrap;
+  tab-size: 4;
 }
 pre code {
   background: none;
   padding: 0;
-  font-size: 0.82rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
 }
 
 input,
@@ -206,6 +227,11 @@ select {
 .post h2 a {
   color: inherit;
 }
+.post p {
+  color: var(--text-dim);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
 .site-header {
   position: relative;
   z-index: 2;
@@ -245,6 +271,22 @@ article :is(p, ul, ol, pre, blockquote, table, h2, h3, h4) {
 }
 article :is(h2, h3, h4) {
   margin-top: 2rem;
+}
+/* Prose written in the post itself, as opposed to an interactive component */
+article section > :is(p, ul, ol, blockquote) {
+  font-family: var(--font-text);
+  font-size: 1.125rem;
+  line-height: 1.65;
+  text-wrap: pretty;
+  hanging-punctuation: first;
+}
+article section > :is(p, ul, ol, blockquote) a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+article section > :is(ul, ol) > li + li {
+  margin-top: 0.25rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
