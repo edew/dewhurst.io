@@ -64,7 +64,7 @@ export default function FrenchDrill() {
     }
   }
 
-  function onSubmit(event: React.FormEvent) {
+  function onSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (locked) {
