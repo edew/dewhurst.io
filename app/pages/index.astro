@@ -17,7 +17,7 @@ const posts = await getPosts();
         posts.map((post) => (
           <li>
             <time datetime={isoDate(post)}>{isoDate(post)}</time>
-            <a href={postPath(post)}>{post.id}</a>
+            <a href={postPath(post)}>{post.data.title}</a>
             <p>{post.data.description}</p>
           </li>
         ))
