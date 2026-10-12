@@ -226,10 +226,13 @@ time {
 .posts li {
   display: grid;
   grid-template-columns: 12ch 1fr;
+  margin-block-end: 1.5em;
+}
+main .posts li > * {
+  margin: 0;
 }
 main .posts p {
   grid-column: 2;
-  margin: 0 0 1.5em;
   color: var(--muted);
 }
 @media (min-width: 60rem) {
