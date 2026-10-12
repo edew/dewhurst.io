@@ -34,7 +34,7 @@
 
 /* Darker by day, so that yellow and cyan still show on paper */
 @media (prefers-color-scheme: light) {
-  .screen {
+  :root:not([data-theme="dark"]) .screen {
     --lightness: 36%;
   }
 }

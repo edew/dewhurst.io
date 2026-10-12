@@ -3,7 +3,7 @@
    brightness, never size. */
 :root {
   color-scheme: dark light;
-  --sky: #070a18;
+  --sky: var(--sky-night);
   --text: #f3efe2;
   --text-dim: #8e9aba;
   --star: #dfe8ff;
@@ -17,10 +17,14 @@
     ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 }
 
-/* By day: ink on paper, with the stars drawn in ink too */
+/* By day: ink on paper, with the stars drawn in ink too, unless this browser
+   has opted into the night sky with localStorage.theme = "dark" */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
 @media (prefers-color-scheme: light) {
-  :root {
-    --sky: #f4f1e8;
+  :root:not([data-theme="dark"]) {
+    --sky: var(--sky-day);
     --text: #1b2340;
     --text-dim: #5b6685;
     --star: #2d3a64;
@@ -51,6 +55,10 @@ body {
 }
 
 /* Light text on a dark ground renders too heavy with subpixel smoothing */
+:root[data-theme="dark"] body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 @media (prefers-color-scheme: dark) {
   body {
     -webkit-font-smoothing: antialiased;

@@ -16,10 +16,25 @@ const { canonical, description, robots, title } = Astro.props;
 const speculationRules = JSON.stringify({
   prerender: [{ where: { href_matches: "/*" }, eagerness: "moderate" }],
 });
+
+// root.css takes these from the custom properties set on <html>.
+const sky = { night: "#070a18", day: "#f4f1e8" };
+
+// Setting localStorage.theme = "dark" in a browser shows that browser the dark
+// theme whatever its preference, so it can be checked by day. This runs before
+// the body is parsed, so the light theme never flashes first.
+const forceDarkTheme = `try {
+  if (localStorage.theme === "dark") {
+    document.documentElement.dataset.theme = "dark";
+    for (const meta of document.querySelectorAll('meta[name="theme-color"]')) {
+      meta.content = ${JSON.stringify(sky.night)};
+    }
+  }
+} catch {}`;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" style={`--sky-night: ${sky.night}; --sky-day: ${sky.day}`}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -31,8 +46,9 @@ const speculationRules = JSON.stringify({
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="theme-color" content="#070a18" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#f4f1e8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content={sky.night} media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content={sky.day} media="(prefers-color-scheme: light)" />
+    <script is:inline set:html={forceDarkTheme} />
     <script type="speculationrules" is:inline set:html={speculationRules} />
   </head>
   <body>
