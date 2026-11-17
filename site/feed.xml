@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+  <channel>
+    <title>For Me</title>
+    <link>https://www.dewhurst.io/</link>
+    <description>A blog for me</description>
+    <item>
+      <title>Neptune's Brood</title>
+      <link>https://www.dewhurst.io/2026/10/12/neptunes-brood</link>
+      <guid>https://www.dewhurst.io/2026/10/12/neptunes-brood</guid>
+      <pubDate>Mon, 12 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Neptune's Brood by Charles Stross.</description>
+    </item>
+    <item>
+      <title>Iron Sunrise</title>
+      <link>https://www.dewhurst.io/2026/09/29/iron-sunrise</link>
+      <guid>https://www.dewhurst.io/2026/09/29/iron-sunrise</guid>
+      <pubDate>Tue, 29 Sep 2026 00:00:00 GMT</pubDate>
+      <description>Iron Sunrise by Charles Stross.</description>
+    </item>
+    <item>
+      <title>Ringworld</title>
+      <link>https://www.dewhurst.io/2026/09/21/ringworld</link>
+      <guid>https://www.dewhurst.io/2026/09/21/ringworld</guid>
+      <pubDate>Mon, 21 Sep 2026 00:00:00 GMT</pubDate>
+      <description>Ringworld by Larry Niven.</description>
+    </item>
+    <item>
+      <title>The Player of Games</title>
+      <link>https://www.dewhurst.io/2026/09/21/the-player-of-games</link>
+      <guid>https://www.dewhurst.io/2026/09/21/the-player-of-games</guid>
+      <pubDate>Mon, 21 Sep 2026 00:00:00 GMT</pubDate>
+      <description>The Player of Games by Ian M. Banks.</description>
+    </item>
+    <item>
+      <title>The Day After Tomorrow</title>
+      <link>https://www.dewhurst.io/2026/09/15/the-day-after-tomorrow</link>
+      <guid>https://www.dewhurst.io/2026/09/15/the-day-after-tomorrow</guid>
+      <pubDate>Tue, 15 Sep 2026 00:00:00 GMT</pubDate>
+      <description>The Day After Tomorrow by Allan Folsom.</description>
+    </item>
+    <item>
+      <title>The Jupiter Theft</title>
+      <link>https://www.dewhurst.io/2026/08/28/the-jupiter-theft</link>
+      <guid>https://www.dewhurst.io/2026/08/28/the-jupiter-theft</guid>
+      <pubDate>Fri, 28 Aug 2026 00:00:00 GMT</pubDate>
+      <description>The Jupiter Theft by Donald Moffitt.</description>
+    </item>
+    <item>
+      <title>French</title>
+      <link>https://www.dewhurst.io/2026/07/09/french</link>
+      <guid>https://www.dewhurst.io/2026/07/09/french</guid>
+      <pubDate>Thu, 09 Jul 2026 00:00:00 GMT</pubDate>
+      <description>A little drill for translating English sentences into French across a mix of tenses.</description>
+    </item>
+    <item>
+      <title>Broccoli Muffins</title>
+      <link>https://www.dewhurst.io/2026/01/21/broccoli-muffins</link>
+      <guid>https://www.dewhurst.io/2026/01/21/broccoli-muffins</guid>
+      <pubDate>Wed, 21 Jan 2026 00:00:00 GMT</pubDate>
+      <description>This is the recipe that I use for broccoli muffins.</description>
+    </item>
+    <item>
+      <title>Pulsar clone</title>
+      <link>https://www.dewhurst.io/2026/01/15/pulsar-clone</link>
+      <guid>https://www.dewhurst.io/2026/01/15/pulsar-clone</guid>
+      <pubDate>Thu, 15 Jan 2026 00:00:00 GMT</pubDate>
+      <description>A clone of a thing I saw called Pulsar.</description>
+    </item>
+    <item>
+      <title>git wip</title>
+      <link>https://www.dewhurst.io/2025/06/30/git-wip</link>
+      <guid>https://www.dewhurst.io/2025/06/30/git-wip</guid>
+      <pubDate>Mon, 30 Jun 2025 00:00:00 GMT</pubDate>
+      <description>The git wip and git unwip aliases I've been using.</description>
+    </item>
+    <item>
+      <title>Curry</title>
+      <link>https://www.dewhurst.io/2025/03/07/curry</link>
+      <guid>https://www.dewhurst.io/2025/03/07/curry</guid>
+      <pubDate>Fri, 07 Mar 2025 00:00:00 GMT</pubDate>
+      <description>This is a curry recipe that I followed the other night.</description>
+    </item>
+    <item>
+      <title>variable_is_set</title>
+      <link>https://www.dewhurst.io/2024/12/11/variable-is-set</link>
+      <guid>https://www.dewhurst.io/2024/12/11/variable-is-set</guid>
+      <pubDate>Wed, 11 Dec 2024 00:00:00 GMT</pubDate>
+      <description>This is a bash function for checking if a variable is set.</description>
+    </item>
+    <item>
+      <title>Simple Baguette</title>
+      <link>https://www.dewhurst.io/2024/04/29/simple-baguette</link>
+      <guid>https://www.dewhurst.io/2024/04/29/simple-baguette</guid>
+      <pubDate>Mon, 29 Apr 2024 00:00:00 GMT</pubDate>
+      <description>This is the baguette recipe that I have been following for the past few months.</description>
+    </item>
+    <item>
+      <title>GIT_SSH_COMMAND</title>
+      <link>https://www.dewhurst.io/2022/08/13/git-ssh-command</link>
+      <guid>https://www.dewhurst.io/2022/08/13/git-ssh-command</guid>
+      <pubDate>Sat, 13 Aug 2022 00:00:00 GMT</pubDate>
+      <description>Last week I used Git's GIT_SSH_COMMAND environment variable to force a command running in a CircleCI job to use one of CircleCI's "Additional SSH Keys" instead of the "deploy key".</description>
+    </item>
+  </channel>
+</rss>

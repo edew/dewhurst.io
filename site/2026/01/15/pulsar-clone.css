@@ -1,0 +1,19 @@
+/* The grid is a square canvas as wide as the column allows, with the
+   expression that draws it underneath. */
+pulsar-clone {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  max-width: 400px;
+  margin: auto;
+
+  canvas {
+    width: 100%;
+    aspect-ratio: 1;
+  }
+
+  textarea {
+    field-sizing: content;
+    resize: none;
+  }
+}

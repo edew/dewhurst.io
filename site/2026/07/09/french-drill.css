@@ -1,0 +1,57 @@
+/* A column of prompt, answer box and feedback. The answer box is the site's
+   standard input. */
+french-drill {
+  display: flex;
+  flex-direction: column;
+
+  p {
+    margin: 0;
+  }
+
+  .progress {
+    color: var(--dim);
+  }
+
+  .prompt {
+    font-weight: 700;
+    margin-top: 1.5em;
+    min-height: 1.5em;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    margin-top: 1.5em;
+  }
+
+  form[hidden] {
+    display: none;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 2ch;
+  }
+
+  .feedback {
+    min-height: 1.5em;
+    margin-top: 1.5em;
+  }
+
+  .feedback.correct {
+    color: var(--ok);
+  }
+
+  .feedback.wrong {
+    color: var(--bad);
+  }
+
+  .feedback.revealed {
+    color: var(--dim);
+  }
+
+  .restart {
+    align-self: flex-start;
+  }
+}

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GIT_SSH_COMMAND | For Me</title>
+    <meta name="description" content="Last week I used Git's GIT_SSH_COMMAND environment variable to force a command running in a CircleCI job to use one of CircleCI's &quot;Additional SSH Keys&quot; instead of the &quot;deploy key&quot;.">
+    <link rel="canonical" href="https://www.dewhurst.io/2022/08/13/git-ssh-command">
+    <link rel="alternate" type="application/rss+xml" title="For Me" href="/feed.xml">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#fffff9" media="(prefers-color-scheme: light)">
+    <link rel="stylesheet" href="/style.css">
+    <script src="/site.js"></script>
+    <script type="speculationrules">{"prerender":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}</script>
+  </head>
+  <body>
+    <header>
+      <a href="/" aria-label="dewhurst"><svg viewBox="779 497 751 220" role="img"><use href="/title.svg#title"/></svg></a>
+    </header>
+    <main>
+      <article>
+        <h1>GIT_SSH_COMMAND</h1>
+
+        <p>Last week I used Git's GIT_SSH_COMMAND environment variable to force a command running in a CircleCI job to use one of CircleCI's "Additional SSH Keys" instead of the "deploy key".</p>
+
+        <ol>
+          <li>Add an "Additional SSH Key" to CircleCI. Take note of its fingerprint.</li>
+          <li>Use the special "add_ssh_keys" step in your CircleCI configuration to add the SSH key to your job. This step will add a file named "id_rsa_FINGERPRINT".</li>
+          <li>
+            Set the GIT_SSH_COMMAND to force git to use your desired key:
+            <pre>GIT_SSH_COMMAND: "ssh -i /home/circleci/.ssh/id_rsa_FINGERPRINT -o
+UserKnownHostsFile=/home/circleci/.ssh/known_hosts"</pre>
+          </li>
+        </ol>
+      </article>
+    </main>
+  </body>
+</html>
